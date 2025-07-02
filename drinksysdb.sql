@@ -85,4 +85,12 @@ VALUES (1, 2, 150.00);
 INSERT INTO order_details (order_id, drink_id, quantity, price)
 VALUES (1, 1, 2, 100.00),(1, 3, 1, 50.00); 
 
+CREATE TABLE payments (
+    payment_id INT AUTO_INCREMENT PRIMARY KEY,
+    order_id INT NOT NULL,
+    method VARCHAR(50),
+    transaction_code VARCHAR(100),
+    payment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (order_id) REFERENCES orders(order_id)
+);
 
