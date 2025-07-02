@@ -93,4 +93,5 @@ CREATE TABLE payments (
     payment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (order_id) REFERENCES orders(order_id)
 );
+INSERT INTO payments (order_id,method, transaction_code) VALUES ( 1,'M-Pesa', 'MPESA9876AB');
 
