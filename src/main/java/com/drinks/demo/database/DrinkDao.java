@@ -28,4 +28,25 @@ public class DrinkDao {
         }
         return drinks;
     }
+    public List<String> getDrinkNamesByKeyword(String keyword) {
+        List<String> drinks = new ArrayList<>();
+        String sql = "SELECT name FROM drinks WHERE name LIKE ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, "%" + keyword + "%");
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                drinks.add(rs.getString("name"));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return drinks;
+    }
 }
+

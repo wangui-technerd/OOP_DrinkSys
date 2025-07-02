@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.drinks.demo.controller.OrderFormController"
+      spacing="20" alignment="TOP_CENTER"
+      style="-fx-background-color: #fdf6f1;"
+      padding="20">
+
+    <!-- Page Title -->
+    <Label text="Drink Shop - Place your Order"
+           style="-fx-background-color: #5e3a2e; -fx-text-fill: white; -fx-font-size: 20px;"
+           maxWidth="Infinity" alignment="CENTER" />
+
+    <!-- Branch selection -->
+    <ComboBox fx:id="branchSelector" promptText="Select Branch"
+              style="-fx-pref-width: 300;" onAction="#onBranchSelected"/>
+    <Label fx:id="branchNotice" text="Please select a branch to start ordering."
+           style="-fx-text-fill: red;"/>
+
+    <!-- Drink Order Section (hidden initially) -->
+    <VBox fx:id="orderSection" visible="false" spacing="20">
+
+        <!-- Drink Cards Grid -->
+        <GridPane hgap="20" vgap="20" alignment="CENTER">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="50"/>
+                <ColumnConstraints percentWidth="50"/>
+            </columnConstraints>
+
+            <!-- Coffee Card -->
+            <VBox spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="0"
+                  style="-fx-background-color: white; -fx-padding: 15; -fx-border-radius: 16;">
+                <ImageView fitWidth="150" fitHeight="150">
+                    <image><Image url="https://i.imgur.com/AoIzoQ2.png"/></image>
+                </ImageView>
+                <Label text="Coffee (Carton)"/>
+                <Label text="1200 KES"/>
+                <ComboBox fx:id="coffeeType" promptText="Type"/>
+                <TextField fx:id="qtyCoffee" promptText="Qty"/>
+                <Button text="Add" onAction="#addCoffee"/>
+            </VBox>
+
+            <!-- Energy Drink Card -->
+            <VBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="0"
+                  style="-fx-background-color: white; -fx-padding: 15; -fx-border-radius: 16;">
+                <ImageView fitWidth="150" fitHeight="150">
+                    <image><Image url="https://i.imgur.com/cX7mj1d.png"/></image>
+                </ImageView>
+                <Label text="Energy Drinks (Carton)"/>
+                <Label text="1800 KES"/>
+                <ComboBox fx:id="energyType" promptText="Type"/>
+                <TextField fx:id="qtyEnergy" promptText="Qty"/>
+                <Button text="Add" onAction="#addEnergy"/>
+            </VBox>
+
+            <!-- Juice Card -->
+            <VBox spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="1"
+                  style="-fx-background-color: white; -fx-padding: 15; -fx-border-radius: 16;">
+                <ImageView fitWidth="150" fitHeight="150">
+                    <image><Image url="https://i.imgur.com/cklXBOM.png"/></image>
+                </ImageView>
+                <Label text="Juice (Crate)"/>
+                <Label text="900 KES"/>
+                <ComboBox fx:id="juiceType" promptText="Type"/>
+                <TextField fx:id="qtyJuice" promptText="Qty"/>
+                <Button text="Add" onAction="#addJuice"/>
+            </VBox>
+
+            <!-- Soda Card -->
+            <VBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="1"
+                  style="-fx-background-color: white; -fx-padding: 15; -fx-border-radius: 16;">
+                <ImageView fitWidth="150" fitHeight="150">
+                    <image><Image url="https://i.imgur.com/nwsLiY8.png"/></image>
+                </ImageView>
+                <Label text="Soda (Crate)"/>
+                <Label text="1100 KES"/>
+                <ComboBox fx:id="sodaType" promptText="Type"/>
+                <TextField fx:id="qtySoda" promptText="Qty"/>
+                <Button text="Add" onAction="#addSoda"/>
+            </VBox>
+        </GridPane>
+
+        <!-- Order Summary -->
+        <VBox spacing="10" style="-fx-background-color: #fff7f0; -fx-padding: 15; -fx-border-radius: 12;">
+            <Label text="Wholesale Order Summary"/>
+            <ListView fx:id="orderList" />
+            <Label>
+                <text>
+                    <Text text="Total: "/>
+                    <Text fx:id="totalCost" text="0" />
+                    <Text text=" KES"/>
+                </text>
+            </Label>
+            <Button text="Place Order" style="-fx-background-color: #5e3a2e; -fx-text-fill: white;" onAction="#placeOrder"/>
+        </VBox>
+    </VBox>
+</VBox>

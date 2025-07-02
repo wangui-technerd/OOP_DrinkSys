@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controller.PaymentController"
+      spacing="20"
+      style="-fx-background-color: #f9f5f2;"
+      padding="20">
+
+    <!-- Header -->
+    <Label text="Complete Payment"
+           style="-fx-background-color: #5e3a2e; -fx-text-fill: white; -fx-font-size: 24px; -fx-padding: 10px;"
+           maxWidth="Infinity" alignment="CENTER"/>
+
+    <!-- Container -->
+    <VBox spacing="16" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 12; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 2);"
+          maxWidth="600" alignment="TOP_LEFT">
+
+        <Label text="Order Payment" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+
+        <!-- Summary -->
+        <VBox spacing="10">
+            <HBox spacing="5">
+                <Label text="Customer:"/>
+                <Label fx:id="customerName" text="Hafsa" />
+            </HBox>
+            <HBox spacing="5">
+                <Label text="Order ID:"/>
+                <Label fx:id="orderId" text="ORD-00123"/>
+            </HBox>
+            <HBox spacing="5">
+                <Label text="Total:"/>
+                <Label fx:id="totalAmount" text="6,800" />
+                <Label text="KES"/>
+            </HBox>
+        </VBox>
+
+        <!-- Payment Method Section -->
+        <VBox spacing="12">
+            <Label text="Select Payment Method:"/>
+            <ComboBox fx:id="paymentMethod">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="M-Pesa"/>
+                        <String fx:value="Debit/Credit Card"/>
+                        <String fx:value="Pay on Delivery"/>
+                    </FXCollections>
+                </items>
+            </ComboBox>
+
+            <Label text="Transaction Code (if paid):"/>
+            <TextField fx:id="transactionCode" promptText="e.g. MPESA123XYZ"/>
+        </VBox>
+
+        <!-- Submit Button -->
+        <Button text="Confirm & Submit"
+                style="-fx-background-color: #5e3a2e; -fx-text-fill: white; -fx-font-size: 16px;"
+                maxWidth="Infinity"
+                onAction="#submitPayment"/>
+    </VBox>
+</VBox>

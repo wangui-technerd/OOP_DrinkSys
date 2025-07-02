@@ -7,6 +7,9 @@ public class OrderDetail {
     private int quantity;
     private double price;
 
+
+    private String drinkName;
+
     public OrderDetail() {}
 
     public OrderDetail(int orderDetailId, int orderId, int drinkId, int quantity, double price) {
@@ -55,5 +58,13 @@ public class OrderDetail {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public String getDrinkName() {
+        return drinkName;
+    }
+
+    public void setDrinkName(String drinkName) {
+        this.drinkName = drinkName;
     }
 }

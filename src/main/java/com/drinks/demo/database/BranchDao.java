@@ -7,7 +7,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BranchDoa {
+public class BranchDao {
     public List<Branch> getAllBranches() {
         List<Branch> branches = new ArrayList<>();
         String sql = "SELECT * FROM branches";
@@ -27,4 +27,23 @@ public class BranchDoa {
         }
         return branches;
     }
+    public List<String> getAllBranchLocations() {
+        List<String> locations = new ArrayList<>();
+        String sql = "SELECT location FROM branches";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                locations.add(rs.getString("location"));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return locations;
+    }
 }
+
