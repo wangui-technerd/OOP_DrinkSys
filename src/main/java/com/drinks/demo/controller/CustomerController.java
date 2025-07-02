@@ -20,6 +20,9 @@ public class CustomerController {
 
     private final ObservableList<Customer> customerData = FXCollections.observableArrayList();
 
+
+    
+
     @FXML
     private void initialize() {
         // Configure table columns
