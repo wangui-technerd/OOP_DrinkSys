@@ -78,6 +78,20 @@ public class Main extends Application {
 //            e.printStackTrace();
 //        }
 //    }
+//        public void showBranchDashboard(int branchId) {
+//            try {
+//                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/branch_dashboard.fxml"));
+//                AnchorPane branchView = loader.load();
+//
+//                BranchController controller = loader.getController();
+//                controller.setMainApp(this);
+//                controller.setBranchId(branchId); // customize data for that branch
+//
+//                primaryStage.setScene(new Scene(branchView));
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
 
 //    public static void main(String[] args) {
 //        launch(args);
