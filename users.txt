@@ -1,0 +1,2 @@
+Patrick Mungai,kyle@gmail.com,12345,customer
+Patrick,kyliian@gmail.com,qwerty,admin
