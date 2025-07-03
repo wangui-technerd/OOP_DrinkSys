@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.drinks.demo.controller.CustomerController"
+            prefHeight="400.0" prefWidth="600.0">
+
+    <VBox spacing="10" AnchorPane.topAnchor="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10">
+        <Label text="Customer Management" style="-fx-font-size: 18; -fx-font-weight: bold;"/>
+
+        <HBox spacing="10">
+            <Label text="Name:"/>
+            <TextField fx:id="customerNameField" prefWidth="200"/>
+            <Label text="Contact:"/>
+            <TextField fx:id="contactField" prefWidth="200"/>
+            <Button fx:id="addButton" text="Add Customer"/>
+        </HBox>
+
+        <TableView fx:id="customerTable" prefHeight="300">
+            <columns>
+                <TableColumn fx:id="idColumn" text="ID" prefWidth="50"/>
+                <TableColumn fx:id="nameColumn" text="Name" prefWidth="200"/>
+                <TableColumn fx:id="contactColumn" text="Contact" prefWidth="300"/>
+            </columns>
+        </TableView>
+    </VBox>
+</AnchorPane>
