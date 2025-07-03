@@ -4,21 +4,24 @@ import com.drinks.demo.Main;
 import javafx.fxml.FXML;
 
 public class WelcomeController {
+
     private Main mainApp;
 
     public void setMainApp(Main mainApp) {
-        System.out.println("Main App injected into controller.");
         this.mainApp = mainApp;
     }
 
-//    @FXML
-//    private void goToLogin() {
-//        mainApp.showLoginView();
-//    }
+    @FXML
+    public void goToLogin() {
+        if (mainApp != null) {
+            mainApp.showLoginView();
+        }
+    }
 
-//    @FXML
-//    private void goToRegister() {
-//        mainApp.showRegisterView();
-//    }
-
+    @FXML
+    public void goToRegister() {
+        if (mainApp != null) {
+            mainApp.showRegisterView();
+        }
+    }
 }

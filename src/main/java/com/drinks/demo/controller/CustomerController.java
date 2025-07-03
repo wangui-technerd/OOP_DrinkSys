@@ -20,6 +20,12 @@ public class CustomerController {
 
     private final ObservableList<Customer> customerData = FXCollections.observableArrayList();
 
+    private com.drinks.demo.Main mainApp;
+
+    public void setMainApp(com.drinks.demo.Main mainApp) {
+        this.mainApp = mainApp;
+    }
+
 
     
 
