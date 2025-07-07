@@ -1,63 +1,87 @@
 package com.drinks.demo.controller;
 
-import com.drinks.demo.model.User;
-import com.drinks.demo.service.AuthService;
+import com.drinks.demo.Main;
+import com.drinks.demo.utilities.DBConnection;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
+import javafx.scene.control.Alert;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 public class LoginController {
 
-    @FXML private TextField emailField;
-    @FXML private PasswordField passwordField;
+    private Main mainApp;
 
-    private final AuthService authService = new AuthService();
-    private com.drinks.demo.Main mainApp;
+    @FXML
+    private TextField emailField;
 
-    public void setMainApp(com.drinks.demo.Main mainApp) {
+    @FXML
+    private PasswordField passwordField;
+
+    public void setMainApp(Main mainApp) {
         this.mainApp = mainApp;
     }
 
-
     @FXML
-    public void handleLogin() {
+    private void handleLogin() {
         String email = emailField.getText().trim();
         String password = passwordField.getText().trim();
 
         if (email.isEmpty() || password.isEmpty()) {
-            showAlert(Alert.AlertType.ERROR, "Both fields are required.");
+            showAlert("Validation Error", "Email and Password must not be empty.");
             return;
         }
 
-        User user = authService.login(email, password);
-        if (user != null) {
-            showAlert(Alert.AlertType.INFORMATION, "Welcome, " + user.getName());
+        try (Connection conn = DBConnection.getConnection()) {
 
-            // Load dashboard depending on role
-            String fxml = user.getRole().equalsIgnoreCase("admin") ?
-                    "/com/drinks/demo/views/AdminDashboard.fxml" :
-                    "/com/drinks/demo/views/CustomerDashboard.fxml";
-
-            try {
-                Parent dashboard = FXMLLoader.load(getClass().getResource(fxml));
-                Stage stage = (Stage) emailField.getScene().getWindow();
-                stage.setScene(new Scene(dashboard, 600, 400));
-                stage.setTitle(user.getRole() + " Dashboard");
-            } catch (Exception e) {
-                showAlert(Alert.AlertType.ERROR, "Failed to load dashboard: " + e.getMessage());
-                e.printStackTrace();
+            // First check admin
+            String adminSQL = "SELECT * FROM admin WHERE username = ? AND password = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(adminSQL)) {
+                stmt.setString(1, email);
+                stmt.setString(2, password);
+                ResultSet rs = stmt.executeQuery();
+                if (rs.next()) {
+                    mainApp.showAdminDashboard();
+                    return;
+                }
             }
 
-        } else {
-            showAlert(Alert.AlertType.ERROR, "Invalid email or password.");
+            // Check customer
+            String customerSQL = "SELECT * FROM customers WHERE contact = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(customerSQL)) {
+                stmt.setString(1, email);
+                ResultSet rs = stmt.executeQuery();
+
+                if (rs.next()) {
+                    String role = rs.getString("role");
+                    if ("customer".equalsIgnoreCase(role)) {
+                        mainApp.showCustomerDashboard();
+                        return;
+                    } else if ("admin".equalsIgnoreCase(role)) {
+                        mainApp.showAdminDashboard();
+                        return;
+                    } else {
+                        showAlert("Login Error", "Unknown role: " + role);
+                        return;
+                    }
+                }
+            }
+
+            showAlert("Login Failed", "Invalid username or password.");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert("Database Error", "Something went wrong while connecting to the database.");
         }
     }
 
-    private void showAlert(Alert.AlertType type, String message) {
-        Alert alert = new Alert(type);
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
     }
