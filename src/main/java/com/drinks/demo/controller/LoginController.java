@@ -1,0 +1,88 @@
+package com.drinks.demo.controller;
+
+import com.drinks.demo.Main;
+import com.drinks.demo.utilities.DBConnection;
+import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
+public class LoginController {
+
+    private Main mainApp;
+
+    @FXML
+    private TextField emailField;
+
+    @FXML
+    private PasswordField passwordField;
+
+    public void setMainApp(Main mainApp) {
+        this.mainApp = mainApp;
+    }
+
+    @FXML
+    private void handleLogin() {
+        String email = emailField.getText().trim();
+        String password = passwordField.getText().trim();
+
+        if (email.isEmpty() || password.isEmpty()) {
+            showAlert("Validation Error", "Email and Password must not be empty.");
+            return;
+        }
+
+        try (Connection conn = DBConnection.getConnection()) {
+
+            // First check admin
+            String adminSQL = "SELECT * FROM admin WHERE username = ? AND password = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(adminSQL)) {
+                stmt.setString(1, email);
+                stmt.setString(2, password);
+                ResultSet rs = stmt.executeQuery();
+                if (rs.next()) {
+                    mainApp.showAdminDashboard();
+                    return;
+                }
+            }
+
+            // Check customer
+            String customerSQL = "SELECT * FROM customers WHERE contact = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(customerSQL)) {
+                stmt.setString(1, email);
+                ResultSet rs = stmt.executeQuery();
+
+                if (rs.next()) {
+                    String role = rs.getString("role");
+                    if ("customer".equalsIgnoreCase(role)) {
+                        mainApp.showCustomerDashboard();
+                        return;
+                    } else if ("admin".equalsIgnoreCase(role)) {
+                        mainApp.showAdminDashboard();
+                        return;
+                    } else {
+                        showAlert("Login Error", "Unknown role: " + role);
+                        return;
+                    }
+                }
+            }
+
+            showAlert("Login Failed", "Invalid username or password.");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert("Database Error", "Something went wrong while connecting to the database.");
+        }
+    }
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+}

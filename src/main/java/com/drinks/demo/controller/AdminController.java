@@ -13,6 +13,12 @@ public class AdminController {
     @FXML private Label statusLabel;
 
     @FXML
+
+    private com.drinks.demo.Main mainApp;
+
+    public void setMainApp(com.drinks.demo.Main mainApp) {
+        this.mainApp = mainApp;
+    }
     private void initialize() {
         // Set up login button action
         loginButton.setOnAction(event -> handleLogin());

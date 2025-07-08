@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.drinks.demo.controller.LoginController"
+            stylesheets="../css/style.css"
+            style="-fx-background-color: #1f293a;"
+            prefWidth="600" prefHeight="400">
+
+    <VBox alignment="CENTER" spacing="10" layoutX="100" layoutY="50" prefWidth="400" styleClass="login-box">
+
+        <Label text="Login" styleClass="h2"/>
+
+        <VBox spacing="15" styleClass="form-container">
+            <VBox styleClass="input-box">
+                <TextField fx:id="emailField" promptText="Email" />
+                <Label text="Email" />
+            </VBox>
+
+            <VBox styleClass="input-box">
+                <PasswordField fx:id="passwordField" promptText="Password" />
+                <Label text="Password" />
+            </VBox>
+
+            <Button text="Login" onAction="#handleLogin" styleClass="btn" />
+            <Label text="Don't have an account?" styleClass="forgot-pass" />
+        </VBox>
+    </VBox>
+</AnchorPane>

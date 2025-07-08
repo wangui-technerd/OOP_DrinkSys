@@ -1,0 +1,105 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+.root {
+    -fx-font-family: 'Poppins', sans-serif;
+    -fx-background-color: #1f293a;
+}
+
+/* Centering layout */
+AnchorPane {
+    -fx-padding: 0;
+}
+
+/* Container for the login/register box */
+.login-box {
+    -fx-background-color: #111827;
+    -fx-padding: 40;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-effect: dropshadow(gaussian, #0ef, 10, 0.5, 0, 0);
+    -fx-alignment: center; /* center children horizontally */
+}
+
+/* Headings */
+.h2 {
+    -fx-font-size: 24px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #0ef;
+    -fx-text-alignment: center; /* center the text */
+}
+
+/* Form layout */
+.form-container {
+    -fx-spacing: 20;
+    -fx-alignment: center; /* changed from center-left */
+    -fx-padding: 20 0 0 0;
+}
+
+/* Input box */
+.input-box {
+    -fx-spacing: 5;
+    -fx-pref-width: 100%;
+}
+
+.input-box TextField,
+.input-box PasswordField,
+.input-box ChoiceBox {
+    -fx-pref-height: 45;
+    -fx-background-color: transparent;
+    -fx-border-color: #2c4766;
+    -fx-border-radius: 30;
+    -fx-background-radius: 30;
+    -fx-padding: 0 15 0 15;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-alignment: center; /* center the input text */
+}
+
+.input-box TextField:focused,
+.input-box PasswordField:focused,
+.input-box ChoiceBox:focused {
+    -fx-border-color: #0ef;
+}
+
+/* Labels inside input box */
+.input-box Label {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 13px;
+    -fx-text-alignment: center; /* center label text */
+}
+
+/* Button styling */
+.btn {
+    -fx-background-color: #0ef;
+    -fx-text-fill: #1f293a;
+    -fx-font-weight: 600;
+    -fx-background-radius: 30;
+    -fx-pref-height: 45;
+    -fx-cursor: hand;
+    -fx-font-size: 14px;
+}
+
+/* Hover effect for buttons */
+.btn:hover {
+    -fx-background-color: #09c;
+    -fx-text-fill: #ffffff;
+}
+
+/* Forgot password or sign-up prompt */
+.forgot-pass, .signup-link {
+    -fx-font-size: 12px;
+    -fx-text-fill: #aaa;
+    -fx-text-alignment: center; /* center the text */
+}
+
+/* Link styling */
+.forgot-pass:hover,
+.signup-link:hover {
+    -fx-text-fill: #0ef;
+    -fx-underline: true;
+}
+
+/* Optional spacing between fields */
+VBox {
+    -fx-spacing: 10;
+}

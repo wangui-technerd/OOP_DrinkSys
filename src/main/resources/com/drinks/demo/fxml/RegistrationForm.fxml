@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.drinks.demo.controller.RegistrationController"
+            stylesheets="../css/style.css"
+            style="-fx-background-color: #1f293a;"
+            prefWidth="600" prefHeight="500">
+
+    <VBox alignment="CENTER" spacing="10" layoutX="100" layoutY="30" prefWidth="400" styleClass="login-box">
+
+        <Label text="Register" styleClass="h2"/>
+
+        <VBox spacing="15" styleClass="form-container">
+            <VBox styleClass="input-box">
+                <TextField fx:id="nameField" promptText="Full Name" />
+                <Label text="Name" />
+            </VBox>
+
+            <VBox styleClass="input-box">
+                <TextField fx:id="emailField" promptText="Email" />
+                <Label text="Email" />
+            </VBox>
+
+            <VBox styleClass="input-box">
+                <PasswordField fx:id="passwordField" promptText="Password" />
+                <Label text="Password" />
+            </VBox>
+
+            <VBox styleClass="input-box">
+                <ChoiceBox fx:id="roleChoiceBox" prefWidth="250"/>
+                <Label text="Role" />
+            </VBox>
+
+            <Button text="Register" onAction="#handleRegister" styleClass="btn" />
+            <Label text="Already have an account?" styleClass="signup-link"/>
+        </VBox>
+    </VBox>
+</AnchorPane>
