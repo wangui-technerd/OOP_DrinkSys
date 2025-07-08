@@ -27,43 +27,58 @@ public class LoginController {
 
     @FXML
     private void handleLogin() {
-        String emailOrContact = emailField.getText().trim();
+        String email = emailField.getText().trim();
         String password = passwordField.getText().trim();
 
-        if (emailOrContact.isEmpty() || password.isEmpty()) {
-            showAlert("Validation Error", "Email/Contact and Password must not be empty.");
+        if (email.isEmpty() || password.isEmpty()) {
+            showAlert("Validation Error", "Email and Password must not be empty.");
             return;
         }
 
         try (Connection conn = DBConnection.getConnection()) {
-            String sql = "SELECT * FROM users WHERE (email = ? OR contact = ?) AND password = ?";
-            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-                stmt.setString(1, emailOrContact);
-                stmt.setString(2, emailOrContact);
-                stmt.setString(3, password);
-                ResultSet rs = stmt.executeQuery();
 
+            // First check admin
+            String adminSQL = "SELECT * FROM admin WHERE username = ? AND password = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(adminSQL)) {
+                stmt.setString(1, email);
+                stmt.setString(2, password);
+                ResultSet rs = stmt.executeQuery();
                 if (rs.next()) {
-                    String role = rs.getString("role");
-                    if ("admin".equalsIgnoreCase(role)) {
-                        mainApp.showAdminView();
-                    } else if ("customer".equalsIgnoreCase(role)) {
-                        mainApp.showCustomerView();
-                    } else {
-                        showAlert("Login Error", "Unknown role: " + role);
-                    }
+                    mainApp.showAdminDashboard();
                     return;
                 }
             }
 
-            showAlert("Login Failed", "Invalid email/contact or password.");
+            // Now check customer (fixed to check password too)
+            String customerSQL = "SELECT * FROM customers WHERE contact = ? AND password = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(customerSQL)) {
+                stmt.setString(1, email);
+                stmt.setString(2, password);
+                ResultSet rs = stmt.executeQuery();
+
+                if (rs.next()) {
+                    String role = rs.getString("role");
+                    if ("customer".equalsIgnoreCase(role)) {
+                        mainApp.showCustomerDashboard();
+                        return;
+                    } else if ("admin".equalsIgnoreCase(role)) {
+                        mainApp.showAdminDashboard();
+                        return;
+                    } else {
+                        showAlert("Login Error", "Unknown role: " + role);
+                        return;
+                    }
+                }
+            }
+
+            // No match found
+            showAlert("Login Failed", "Invalid username or password.");
 
         } catch (Exception e) {
             e.printStackTrace();
             showAlert("Database Error", "Something went wrong while connecting to the database.");
         }
     }
-
 
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
