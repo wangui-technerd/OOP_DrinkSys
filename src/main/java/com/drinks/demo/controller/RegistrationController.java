@@ -37,9 +37,9 @@ public class RegistrationController {
     @FXML
     private void handleRegister() {
         String name = nameField.getText().trim();
-        String email = emailField.getText().trim(); // Treated as contact
+        String email = emailField.getText().trim();
         String password = passwordField.getText().trim();
-        String role = roleChoiceBox.getValue().toLowerCase(); // store as lowercase
+        String role = roleChoiceBox.getValue().toLowerCase();
 
         if (name.isEmpty() || email.isEmpty() || password.isEmpty() || role == null) {
             showAlert("Validation Error", "Please fill in all fields.");
@@ -49,11 +49,12 @@ public class RegistrationController {
         try (Connection conn = DBConnection.getConnection()) {
 
             // Register in customers table with role
-            String sql = "INSERT INTO customers (name, contact, role) VALUES (?, ?, ?)";
+            String sql = "INSERT INTO users (name, contact, email,role) VALUES (?, ?, ?,?)";
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1, name);
             stmt.setString(2, email);
-            stmt.setString(3, role);
+            stmt.setString(3,password);
+            stmt.setString(4, role);
 
             int rows = stmt.executeUpdate();
 

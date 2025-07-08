@@ -1,15 +1,11 @@
 package com.drinks.demo;
 
-import com.drinks.demo.controller.LoginController;
-import com.drinks.demo.controller.WelcomeController;
-import com.drinks.demo.controller.RegistrationController;
-import com.drinks.demo.controller.AdminDashController;
-import com.drinks.demo.controller.CustomerDashController;
-
+import com.drinks.demo.controller.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
+import javafx.scene.Parent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -24,13 +20,21 @@ public class Main extends Application {
         showWelcomeScreen();
     }
 
+    // ✅ Utility method to add the stylesheet to any Scene
+    private Scene styledScene(AnchorPane view) {
+        Scene scene = new Scene(view);
+        scene.getStylesheets().add(getClass().getResource("/com/drinks/demo/css/style.css").toExternalForm());
+        return scene;
+    }
+
     public void showWelcomeScreen() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/welcome.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/drinks/demo/fxml/Welcome.fxml"));
             AnchorPane welcomeView = loader.load();
             WelcomeController controller = loader.getController();
             controller.setMainApp(this);
-            primaryStage.setScene(new Scene(welcomeView));
+
+            primaryStage.setScene(styledScene(welcomeView));
             primaryStage.show();
         } catch (Exception e) {
             e.printStackTrace();
@@ -39,11 +43,12 @@ public class Main extends Application {
 
     public void showLoginView() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/login.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/drinks/demo/fxml/LoginForm.fxml"));
             AnchorPane loginView = loader.load();
             LoginController controller = loader.getController();
             controller.setMainApp(this);
-            primaryStage.setScene(new Scene(loginView));
+
+            primaryStage.setScene(styledScene(loginView));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -51,35 +56,12 @@ public class Main extends Application {
 
     public void showRegisterView() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/register.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/drinks/demo/fxml/RegistrationForm.fxml"));
             AnchorPane registerView = loader.load();
             RegistrationController controller = loader.getController();
             controller.setMainApp(this);
-            primaryStage.setScene(new Scene(registerView));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
-    public void showAdminDashboard() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/admin_dashboard.fxml"));
-            AnchorPane view = loader.load();
-            AdminDashController controller = loader.getController();
-            controller.setMainApp(this);
-            primaryStage.setScene(new Scene(view));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void showCustomerDashboard() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/customer_dashboard.fxml"));
-            AnchorPane view = loader.load();
-            CustomerDashController controller = loader.getController();
-            controller.setMainApp(this);
-            primaryStage.setScene(new Scene(view));
+            primaryStage.setScene(styledScene(registerView));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -87,9 +69,9 @@ public class Main extends Application {
 
     public void showCustomerView() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/CustomerView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/drinks/demo/fxml/CustomerDash.fxml"));
             AnchorPane customerView = loader.load();
-            primaryStage.setScene(new Scene(customerView));
+            primaryStage.setScene(styledScene(customerView));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -97,25 +79,26 @@ public class Main extends Application {
 
     public void showBranchView() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/BranchView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/drinks/demo/fxml/BranchDash.fxml"));
             AnchorPane branchView = loader.load();
-            primaryStage.setScene(new Scene(branchView));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    public void showAdminView() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/admin_dashboard.fxml"));
-            AnchorPane adminView = loader.load();
-            AdminDashController controller = loader.getController();
-            controller.setMainApp(this);
-            primaryStage.setScene(new Scene(adminView));
+            primaryStage.setScene(styledScene(branchView));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    public void showAdminView() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/drinks/demo/fxml/AdminDash.fxml"));
+            AnchorPane adminView = loader.load();
+            AdminDashController controller = loader.getController();
+            controller.setMainApp(this);
+
+            primaryStage.setScene(styledScene(adminView));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static void main(String[] args) {
         launch(args);

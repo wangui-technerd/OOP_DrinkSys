@@ -14,18 +14,16 @@ public class CustomerDashController {
 
     @FXML
     private void initialize() {
-        branchSelector.getItems().addAll("Main Branch", "Downtown", "Westside");
+        branchSelector.getItems().addAll("Nairobi", "Kisumu", "Nakuru","Mombasa");
     }
 
     @FXML
     private void handleMakeOrder() {
-        // TODO: Show order form
         System.out.println("Order started for " + branchSelector.getValue());
     }
 
     @FXML
     private void handlePayment() {
-        // TODO: Show payment interface
         System.out.println("Proceeding to payment...");
     }
 
