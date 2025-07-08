@@ -15,7 +15,6 @@ public interface OrderService {
     List<Drink> getAllDrinks();
     List<Branch> getAllBranches();
 
-    // ✅ Add these methods
     Order getOrderById(int orderId);
     String getCustomerNameById(int customerId);
     boolean savePayment(int orderId, String method, String code);

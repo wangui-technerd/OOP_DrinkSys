@@ -19,7 +19,10 @@ public class CustomerDashController {
 
     @FXML
     private void handleMakeOrder() {
-        System.out.println("Order started for " + branchSelector.getValue());
+        if (branchSelector.getValue() == null) {
+            return;
+        }
+        mainApp.showOrderView();
     }
 
     @FXML

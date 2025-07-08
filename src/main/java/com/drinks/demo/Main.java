@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.Scene;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -20,8 +21,12 @@ public class Main extends Application {
         showWelcomeScreen();
     }
 
-    // ✅ Utility method to add the stylesheet to any Scene
     private Scene styledScene(AnchorPane view) {
+        Scene scene = new Scene(view);
+        scene.getStylesheets().add(getClass().getResource("/com/drinks/demo/css/style.css").toExternalForm());
+        return scene;
+    }
+    private Scene styledScene(Parent view) {
         Scene scene = new Scene(view);
         scene.getStylesheets().add(getClass().getResource("/com/drinks/demo/css/style.css").toExternalForm());
         return scene;
@@ -71,16 +76,21 @@ public class Main extends Application {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/drinks/demo/fxml/CustomerDash.fxml"));
             AnchorPane customerView = loader.load();
+            CustomerDashController controller = loader.getController();
+            controller.setMainApp(this);
             primaryStage.setScene(styledScene(customerView));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+
     public void showBranchView() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/drinks/demo/fxml/BranchDash.fxml"));
             AnchorPane branchView = loader.load();
+            BranchDashController controller = loader.getController();
+            controller.setMainApp(this);
             primaryStage.setScene(styledScene(branchView));
         } catch (IOException e) {
             e.printStackTrace();
@@ -99,6 +109,18 @@ public class Main extends Application {
             e.printStackTrace();
         }
     }
+    public void showOrderView() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/drinks/demo/fxml/OrderForm.fxml"));
+            Parent orderView = loader.load();
+            OrderFormController controller = loader.getController();
+            controller.setMainApp(this);
+            primaryStage.setScene(styledScene(orderView));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public static void main(String[] args) {
         launch(args);

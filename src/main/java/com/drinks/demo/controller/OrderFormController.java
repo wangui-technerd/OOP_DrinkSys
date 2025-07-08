@@ -1,5 +1,6 @@
 package com.drinks.demo.controller;
 
+import com.drinks.demo.Main;
 import com.drinks.demo.model.Branch;
 import com.drinks.demo.model.Drink;
 import com.drinks.demo.model.Order;
@@ -8,14 +9,8 @@ import com.drinks.demo.service.OrderService;
 import com.drinks.demo.service.OrderServiceImpl;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
-import javafx.stage.Stage;
-
 import java.util.*;
 
 public class OrderFormController {
@@ -26,23 +21,18 @@ public class OrderFormController {
     @FXML private Label branchNotice;
     @FXML private VBox orderSection;
 
-    @FXML private ComboBox<String> coffeeType;
-    @FXML private ComboBox<String> energyType;
-    @FXML private ComboBox<String> juiceType;
-    @FXML private ComboBox<String> sodaType;
-
-    @FXML private TextField qtyCoffee;
-    @FXML private TextField qtyEnergy;
-    @FXML private TextField qtyJuice;
-    @FXML private TextField qtySoda;
+    @FXML private ComboBox<String> drinkTypeCombo;
+    @FXML private ComboBox<String> drinkBrandCombo;
+    @FXML private TextField qtyField;
 
     @FXML private ListView<String> orderList;
-    @FXML private Text totalCost;
+    @FXML private Label totalCost;
 
     private final List<OrderDetail> orderDetails = new ArrayList<>();
-    private final Map<String, Integer> drinkNameToId = new HashMap<>();
     private final Map<String, Integer> branchNameToId = new HashMap<>();
-    private int total = 0;
+    private final Map<String, List<Drink>> typeToBrands = new HashMap<>();
+    private double total = 0;
+    private Main mainApp;
 
     @FXML
     public void initialize() {
@@ -53,17 +43,25 @@ public class OrderFormController {
             branchNameToId.put(b.getLocation(), b.getBranchId());
         }
 
-        // Load drinks
+        // Load drink types and brands
         List<Drink> drinks = orderService.getAllDrinks();
+        Set<String> types = new HashSet<>();
         for (Drink d : drinks) {
-            drinkNameToId.put(d.getName(), d.getDrinkId());
+            types.add(d.getName());
+            typeToBrands.computeIfAbsent(d.getName(), k -> new ArrayList<>()).add(d);
         }
+        drinkTypeCombo.getItems().addAll(types);
 
-        // Populate UI drink types
-        coffeeType.getItems().addAll(orderService.getDrinkTypesByCategory("Coffee"));
-        energyType.getItems().addAll(orderService.getDrinkTypesByCategory("Energy"));
-        juiceType.getItems().addAll(orderService.getDrinkTypesByCategory("Juice"));
-        sodaType.getItems().addAll(orderService.getDrinkTypesByCategory("Soda"));
+        // When type is selected, populate brands
+        drinkTypeCombo.setOnAction(e -> {
+            String selectedType = drinkTypeCombo.getValue();
+            drinkBrandCombo.getItems().clear();
+            if (selectedType != null) {
+                for (Drink d : typeToBrands.get(selectedType)) {
+                    drinkBrandCombo.getItems().add(d.getBrand());
+                }
+            }
+        });
 
         branchNotice.setVisible(true);
         orderSection.setVisible(false);
@@ -77,44 +75,48 @@ public class OrderFormController {
         }
     }
 
-    public void addCoffee() {
-        addItem(coffeeType.getValue(), qtyCoffee, 1200);
-    }
+    @FXML
+    public void addDrink() {
+        String type = drinkTypeCombo.getValue();
+        String brand = drinkBrandCombo.getValue();
+        String qtyStr = qtyField.getText();
 
-    public void addEnergy() {
-        addItem(energyType.getValue(), qtyEnergy, 1800);
-    }
-
-    public void addJuice() {
-        addItem(juiceType.getValue(), qtyJuice, 900);
-    }
-
-    public void addSoda() {
-        addItem(sodaType.getValue(), qtySoda, 1100);
-    }
-
-    private void addItem(String drinkName, TextField qtyField, int pricePerUnit) {
-        if (drinkName == null || drinkName.isEmpty()) {
-            showAlert("Please select a drink type.");
+        if (type == null || brand == null || qtyStr == null || qtyStr.isEmpty()) {
+            showAlert("Please select type, brand, and enter quantity.");
             return;
         }
 
         try {
-            int qty = Integer.parseInt(qtyField.getText());
+            int qty = Integer.parseInt(qtyStr);
             if (qty <= 0) {
                 showAlert("Quantity must be greater than 0.");
                 return;
             }
 
-            int subtotal = qty * pricePerUnit;
-            orderList.getItems().add(drinkName + " x " + qty + " = " + subtotal + " KES");
+            // Find the drink
+            Drink selectedDrink = null;
+            for (Drink d : typeToBrands.get(type)) {
+                if (d.getBrand().equals(brand)) {
+                    selectedDrink = d;
+                    break;
+                }
+            }
+            if (selectedDrink == null) {
+                showAlert("Drink not found.");
+                return;
+            }
+
+            double subtotal = qty * selectedDrink.getPrice();
+            orderList.getItems().add(type + " - " + brand + " x " + qty + " = " + subtotal + " KES");
             total += subtotal;
             totalCost.setText(String.valueOf(total));
 
             OrderDetail detail = new OrderDetail();
-            detail.setDrinkName(drinkName); // optional, just for local display
+            detail.setDrinkId(selectedDrink.getDrinkId());
+            detail.setDrinkName(type);
+            detail.setBrand(brand);
             detail.setQuantity(qty);
-            detail.setPrice(pricePerUnit);
+            detail.setPrice(selectedDrink.getPrice());
             orderDetails.add(detail);
 
             qtyField.clear();
@@ -137,43 +139,20 @@ public class OrderFormController {
             return;
         }
 
-        // Map drink names to drink IDs
-        for (OrderDetail detail : orderDetails) {
-            Integer drinkId = drinkNameToId.get(detail.getDrinkName());
-            if (drinkId == null) {
-                showAlert("Unknown drink: " + detail.getDrinkName());
-                return;
-            }
-            detail.setDrinkId(drinkId);
-        }
-
         Order order = new Order();
-        order.setCustomerId(1); // Static customer for demo
+        order.setCustomerId(1); // Static for demo
         order.setBranchId(branchNameToId.get(selectedBranch));
-        order.setTotalAmount(total); // assuming it's double
+        order.setTotalAmount(total);
 
         int orderId = orderService.placeOrder(order, orderDetails);
 
         if (orderId > 0) {
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Payment.fxml")); // ✅ Update path if needed
-                Parent root = loader.load();
-
-                com.drinks.demo.controller.PaymentController controller = loader.getController();
-                controller.setOrderData(orderId);  // ✅ Send orderId to payment screen
-
-                Stage stage = new Stage();
-                stage.setTitle("Payment");
-                stage.setScene(new Scene(root));
-                stage.show();
-
-                // Optional: close order window
-                ((Stage) orderList.getScene().getWindow()).close();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                showAlert("Error loading payment screen.");
-            }
+            showAlert("Order placed! Order ID: " + orderId);
+            // Optionally, clear the form or open payment screen
+            orderDetails.clear();
+            orderList.getItems().clear();
+            total = 0;
+            totalCost.setText("0");
         } else {
             showAlert("Failed to place order.");
         }
@@ -184,5 +163,10 @@ public class OrderFormController {
         alert.setTitle("Info");
         alert.setContentText(msg);
         alert.showAndWait();
+    }
+
+    // Optional: If you need to set the main app reference
+    public void setMainApp(Main main) {
+        this.mainApp = main;
     }
 }

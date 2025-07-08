@@ -1,6 +1,7 @@
 package com.drinks.demo.model;
 
 public class OrderDetail {
+    private String brand;
     private int orderDetailId;
     private int orderId;
     private int drinkId;
@@ -12,9 +13,10 @@ public class OrderDetail {
 
     public OrderDetail() {}
 
-    public OrderDetail(int orderDetailId, int orderId, int drinkId, int quantity, double price) {
+    public OrderDetail(int orderDetailId,String brand, int orderId, int drinkId, int quantity, double price) {
         this.orderDetailId = orderDetailId;
         this.orderId = orderId;
+        this.brand = brand;
         this.drinkId = drinkId;
         this.quantity = quantity;
         this.price = price;
@@ -66,5 +68,9 @@ public class OrderDetail {
 
     public void setDrinkName(String drinkName) {
         this.drinkName = drinkName;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
     }
 }
