@@ -49,11 +49,11 @@ public class LoginController {
                 }
             }
 
-            // Check customer
+            // Now check customer (fixed to check password too)
             String customerSQL = "SELECT * FROM customers WHERE contact = ? AND password = ?";
             try (PreparedStatement stmt = conn.prepareStatement(customerSQL)) {
                 stmt.setString(1, email);
-                stmt.setString(2, password); // yes, plaintext for now
+                stmt.setString(2, password);
                 ResultSet rs = stmt.executeQuery();
 
                 if (rs.next()) {
@@ -71,7 +71,7 @@ public class LoginController {
                 }
             }
 
-
+            // No match found
             showAlert("Login Failed", "Invalid username or password.");
 
         } catch (Exception e) {
