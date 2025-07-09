@@ -7,6 +7,13 @@
             fx:controller="com.drinks.demo.controller.viewCustomersController">
     <VBox spacing="10" alignment="CENTER" AnchorPane.topAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
         <Label text="All Customers" style="-fx-font-size: 18px;"/>
-        <TableView fx:id="customersTable" prefHeight="300" prefWidth="500"/>
+        <TableView fx:id="customersTable" prefHeight="300" prefWidth="500">
+            <columns>
+                <TableColumn fx:id="idColumn" text="ID" prefWidth="50"/>
+                <TableColumn fx:id="nameColumn" text="Full Name" prefWidth="200"/>
+                <TableColumn fx:id="emailColumn" text="Email" prefWidth="200"/>
+            </columns>
+        </TableView>
+        <Button text="Back to Admin Dashboard" onAction="#handleBackToAdmin"/>
     </VBox>
 </AnchorPane>

@@ -20,7 +20,7 @@
 
         <Button text="Make Order" onAction="#handleMakeOrder" prefWidth="200"/>
         <Button text="Proceed to Payment" onAction="#handlePayment" prefWidth="200"/>
-<!--        <Button text="Back to Admin" onAction="#handleBackToAdmin" prefWidth="200"/>-->
+        <Button text="Back to Welcome " onAction="#handleBackToWelcome" prefWidth="200"/>
     </VBox>
 
 </AnchorPane>

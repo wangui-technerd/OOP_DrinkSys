@@ -43,6 +43,8 @@
                 <Label text=" KES"/>
             </HBox>
             <Button text="Place Order" style="-fx-background-color: #5e3a2e; -fx-text-fill: white;" onAction="#placeOrder"/>
+            <Button text="Back to Dashboard" onAction="#goBack" style="-fx-background-color: #ccc;" />
+
         </VBox>
     </VBox>
 </VBox>

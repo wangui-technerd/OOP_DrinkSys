@@ -1,7 +1,9 @@
 package com.drinks.demo.controller;
+
 import com.drinks.demo.Main;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
+
 public class CustomerDashController {
     private Main mainApp;
 
@@ -14,7 +16,7 @@ public class CustomerDashController {
 
     @FXML
     private void initialize() {
-        branchSelector.getItems().addAll("Nairobi", "Kisumu", "Nakuru","Mombasa");
+        branchSelector.getItems().addAll("Nairobi", "Kisumu", "Nakuru", "Mombasa");
     }
 
     @FXML
@@ -34,5 +36,9 @@ public class CustomerDashController {
     private void handleBackToAdmin() {
         mainApp.showAdminView();
     }
-}
 
+    @FXML
+    private void handleBackToWelcome() {
+        mainApp.showWelcomeScreen(); // Make sure this method exists in Main.java
+    }
+}

@@ -1,14 +1,35 @@
 package com.drinks.demo.controller;
 
+import com.drinks.demo.model.Customer;
+import com.drinks.demo.service.CustomerService;
+import com.drinks.demo.service.CustomerServiceImpl;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 public class viewCustomersController {
+
     @FXML
-    private TableView<?> customersTable;
+    private TableView<Customer> customersTable;
+    @FXML
+    private TableColumn<Customer, Integer> idColumn;
+    @FXML
+    private TableColumn<Customer, String> nameColumn;
+    @FXML
+    private TableColumn<Customer, String> contactColumn;
+
+    private final CustomerService customerService = new CustomerServiceImpl();
 
     @FXML
     public void initialize() {
-        // TODO: Load data into customersTable
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        contactColumn.setCellValueFactory(new PropertyValueFactory<>("contact"));
+
+        ObservableList<Customer> customerData = FXCollections.observableArrayList(customerService.getAllCustomers());
+        customersTable.setItems(customerData);
     }
 }

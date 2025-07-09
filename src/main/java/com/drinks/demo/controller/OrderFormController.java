@@ -11,6 +11,7 @@ import com.drinks.demo.service.OrderServiceImpl;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+
 import java.util.*;
 
 public class OrderFormController {
@@ -148,7 +149,6 @@ public class OrderFormController {
 
         if (orderId > 0) {
             showAlert("Order placed! Order ID: " + orderId);
-            // Optionally, clear the form or open payment screen
             orderDetails.clear();
             orderList.getItems().clear();
             total = 0;
@@ -165,8 +165,14 @@ public class OrderFormController {
         alert.showAndWait();
     }
 
-    // Optional: If you need to set the main app reference
     public void setMainApp(Main main) {
         this.mainApp = main;
+    }
+
+    @FXML
+    private void goBack() {
+        if (mainApp != null) {
+            mainApp.showCustomerView(); // Or showAdminView() depending on user type
+        }
     }
 }
