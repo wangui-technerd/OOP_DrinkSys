@@ -36,22 +36,8 @@ public class LoginController {
         }
 
         try (Connection conn = DBConnection.getConnection()) {
-
-            // First check admin
-            String adminSQL = "SELECT * FROM admin WHERE username = ? AND password = ?";
-            try (PreparedStatement stmt = conn.prepareStatement(adminSQL)) {
-                stmt.setString(1, email);
-                stmt.setString(2, password);
-                ResultSet rs = stmt.executeQuery();
-                if (rs.next()) {
-                    mainApp.showAdminView();
-                    return;
-                }
-            }
-
-            // Now check customer (fixed to check password too)
-            String customerSQL = "SELECT * FROM customers WHERE contact = ? AND password = ?";
-            try (PreparedStatement stmt = conn.prepareStatement(customerSQL)) {
+            String loginSQL = "SELECT * FROM users WHERE email = ? AND password = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(loginSQL)) {
                 stmt.setString(1, email);
                 stmt.setString(2, password);
                 ResultSet rs = stmt.executeQuery();
@@ -68,17 +54,19 @@ public class LoginController {
                         showAlert("Login Error", "Unknown role: " + role);
                         return;
                     }
+                } else {
+                    showAlert("Login Failed", "Invalid email or password.");
                 }
             }
-
-            // No match found
-            showAlert("Login Failed", "Invalid username or password.");
-
         } catch (Exception e) {
             e.printStackTrace();
             showAlert("Database Error", "Something went wrong while connecting to the database.");
         }
     }
+
+
+
+
 
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);

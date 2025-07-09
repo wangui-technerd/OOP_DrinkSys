@@ -2,24 +2,24 @@ package com.drinks.demo.model;
 
 public class User {
     private String name;
-    private String contact; // ✅ Add this
     private String email;
     private String password;
-    private String role; // either "admin" or "customer"
+    private String contact;
+    private String role;
 
-    public User(String name, String contact, String email, String password, String role) {
+    public User(String name,String contact, String email, String password, String role) {
         this.name = name;
-        this.contact = contact;
         this.email = email;
+        this.contact = contact;
         this.password = password;
         this.role = role;
     }
 
     public String getName() { return name; }
-    public String getContact() { return contact; } // ✅ Add this
     public String getEmail() { return email; }
     public String getPassword() { return password; }
     public String getRole() { return role; }
+    public String getContact(){return contact;}
 
     public void setName(String name) { this.name = name; }
     public void setContact(String contact) { this.contact = contact; } // ✅ Add this
@@ -29,7 +29,7 @@ public class User {
 
     @Override
     public String toString() {
-        return name + "," + contact + "," + email + "," + password + "," + role;
+        return name + "," + email + "," + password + "," + role;
     }
 
     public static User fromString(String data) {

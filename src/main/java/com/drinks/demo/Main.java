@@ -121,8 +121,12 @@ public class Main extends Application {
         }
     }
 
+    public void showAdminDash() {
 
+    }
     public static void main(String[] args) {
         launch(args);
     }
+
+
 }
