@@ -24,4 +24,12 @@ public class WelcomeController {
             mainApp.showRegisterView();
         }
     }
+
+    @FXML
+    public void goToOrder() {
+        if (mainApp != null) {
+            System.out.println("Navigating to Order page...");
+            mainApp.showOrderView();
+        }
+    }
 }
