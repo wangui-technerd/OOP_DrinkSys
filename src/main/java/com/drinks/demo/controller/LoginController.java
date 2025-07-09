@@ -44,7 +44,7 @@ public class LoginController {
                 stmt.setString(2, password);
                 ResultSet rs = stmt.executeQuery();
                 if (rs.next()) {
-                    mainApp.showAdminDashboard();
+                    mainApp.showAdminView();
                     return;
                 }
             }
@@ -59,10 +59,10 @@ public class LoginController {
                 if (rs.next()) {
                     String role = rs.getString("role");
                     if ("customer".equalsIgnoreCase(role)) {
-                        mainApp.showCustomerDashboard();
+                        mainApp.showCustomerView();
                         return;
                     } else if ("admin".equalsIgnoreCase(role)) {
-                        mainApp.showAdminDashboard();
+                        mainApp.showAdminView();
                         return;
                     } else {
                         showAlert("Login Error", "Unknown role: " + role);
