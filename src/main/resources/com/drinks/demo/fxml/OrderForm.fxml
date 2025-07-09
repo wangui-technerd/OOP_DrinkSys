@@ -17,7 +17,7 @@
 
     <HBox alignment="CENTER" spacing="10">
         <Label text="Select Branch:"/>
-        <ComboBox fx:id="branchSelector" promptText="Select Branch"/>
+        <ComboBox fx:id="branchSelector" promptText="Select Branch" onAction="#onBranchSelected"/>
     </HBox>
     <Label fx:id="branchNotice" text="Please select a branch to start ordering."
            style="-fx-text-fill: red;"/>

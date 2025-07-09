@@ -10,7 +10,5 @@
 
         <Button text="Login" onAction="#goToLogin" />
         <Button text="Register" onAction="#goToRegister" />
-        <Button text="Order Now" onAction="#goToOrder" />
-
     </VBox>
 </AnchorPane>
