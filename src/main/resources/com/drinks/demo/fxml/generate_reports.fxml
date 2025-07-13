@@ -10,4 +10,9 @@
         <Button text="Download Sales Report"/>
         <Button text="Download Stock Report"/>
     </VBox>
+    <TableView fx:id="customerOrdersTable" />
+    <TableView fx:id="branchSalesTable" />
+    <TableView fx:id="lowStockTable" />
+    <Label fx:id="totalSalesLabel" />
+
 </AnchorPane>

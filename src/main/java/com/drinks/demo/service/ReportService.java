@@ -7,5 +7,5 @@ import java.util.List;
 public interface ReportService {
     List<Order> getOrdersByCustomer(int customerId);
     double getBranchSales(int branchId);
-    double getTotalSales();
+    double getTotalSales() throws ReportServiceException;
 }

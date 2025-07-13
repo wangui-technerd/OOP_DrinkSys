@@ -45,8 +45,7 @@ public class BranchController {
         String location = locationField.getText().trim();
 
         if (!name.isEmpty() && !location.isEmpty()) {
-            int newId = branchData.isEmpty() ? 1 :
-                    branchData.getLast().getBranchId() + 1;
+            int newId  = branchData.isEmpty() ? 1 : branchData.get(branchData.size() - 1).getBranchId() + 1;
             branchData.add(new Branch(newId, name, location));
 
             // Clear input fields
