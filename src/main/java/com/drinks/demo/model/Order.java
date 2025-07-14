@@ -1,17 +1,21 @@
 package com.drinks.demo.model;
 
 import javafx.beans.property.*;
-
 import java.sql.Timestamp;
 
 public class Order {
     private IntegerProperty orderId = new SimpleIntegerProperty();
     private IntegerProperty customerId = new SimpleIntegerProperty();
     private IntegerProperty branchId = new SimpleIntegerProperty();
-    private ObjectProperty<java.sql.Timestamp> orderDate = new SimpleObjectProperty<>();
+    private ObjectProperty<Timestamp> orderDate = new SimpleObjectProperty<>();
     private DoubleProperty totalAmount = new SimpleDoubleProperty();
 
-    // Extra display data (for SalesController)
+    private String customerName;
+    private String drinkName;
+    private String branchName;
+    private double price;
+
+    // For SalesController
     private StringProperty branch = new SimpleStringProperty();
     private StringProperty drink = new SimpleStringProperty();
     private IntegerProperty quantity = new SimpleIntegerProperty();
@@ -19,109 +23,76 @@ public class Order {
 
     public Order() {}
 
-    // Constructor for Sales display
-    public Order(String branch, String drink, java.sql.Timestamp orderDate, int quantity, double amount) {
-        this.branch.set(branch);
-        this.drink.set(drink);
-        this.orderDate.set(orderDate);
-        this.quantity.set(quantity);
-        this.amount.set(amount);
+    public Order(int orderId, int customerId, String customerName, String drinkName,
+                 int branchId, String branchName, int quantity, double price,
+                 Timestamp orderDate, double totalAmount) {
+        setOrderId(orderId);
+        setCustomerId(customerId);
+        setCustomerName(customerName);
+        setDrinkName(drinkName);
+        setBranchId(branchId);
+        setBranchName(branchName);
+        setQuantity(quantity);
+        setPrice(price);
+        setOrderDate(orderDate);
+        setTotalAmount(totalAmount);
     }
 
-    public Order(int orderId, int userId, int branchId, Timestamp orderDate, double totalAmount) {
+    public Order(String branch, String drink, Timestamp orderDate, int quantity, double amount) {
+        setBranch(branch);
+        setDrink(drink);
+        setOrderDate(orderDate);
+        setQuantity(quantity);
+        setAmount(amount);
     }
 
-    // --- Getters and Setters for DB access ---
-    public int getOrderId() {
-        return orderId.get();
-    }
+    // --- Getters and Setters ---
+    public int getOrderId() { return orderId.get(); }
+    public void setOrderId(int id) { this.orderId.set(id); }
+    public IntegerProperty orderIdProperty() { return orderId; }
 
-    public void setOrderId(int orderId) {
-        this.orderId.set(orderId);
-    }
+    public int getCustomerId() { return customerId.get(); }
+    public void setCustomerId(int id) { this.customerId.set(id); }
+    public IntegerProperty customerIdProperty() { return customerId; }
 
-    public int getCustomerId() {
-        return customerId.get();
-    }
+    public String getCustomerName() { return customerName; }
+    public void setCustomerName(String name) { this.customerName = name; }
 
-    public void setCustomerId(int customerId) {
-        this.customerId.set(customerId);
-    }
+    public String getDrinkName() { return drinkName; }
+    public void setDrinkName(String name) { this.drinkName = name; }
 
-    public int getBranchId() {
-        return branchId.get();
-    }
+    public int getBranchId() { return branchId.get(); }
+    public void setBranchId(int id) { this.branchId.set(id); }
+    public IntegerProperty branchIdProperty() { return branchId; }
 
-    public void setBranchId(int branchId) {
-        this.branchId.set(branchId);
-    }
+    public String getBranchName() { return branchName; }
+    public void setBranchName(String name) { this.branchName = name; }
 
-    public java.sql.Timestamp getOrderDate() {
-        return orderDate.get();
-    }
+    public Timestamp getOrderDate() { return orderDate.get(); }
+    public void setOrderDate(Timestamp date) { this.orderDate.set(date); }
+    public ObjectProperty<Timestamp> orderDateProperty() { return orderDate; }
 
-    public void setOrderDate(java.sql.Timestamp orderDate) {
-        this.orderDate.set(orderDate);
-    }
+    public double getTotalAmount() { return totalAmount.get(); }
+    public void setTotalAmount(double amt) { this.totalAmount.set(amt); }
+    public DoubleProperty totalAmountProperty() { return totalAmount; }
 
-    public double getTotalAmount() {
-        return totalAmount.get();
-    }
+    public double getPrice() { return price; }
+    public void setPrice(double price) { this.price = price; }
 
-    public void setTotalAmount(double totalAmount) {
-        this.totalAmount.set(totalAmount);
-    }
+    // --- For SalesController (TableView display) ---
+    public String getBranch() { return branch.get(); }
+    public void setBranch(String b) { this.branch.set(b); }
+    public StringProperty branchProperty() { return branch; }
 
-    // --- Properties for JavaFX TableView ---
-    public StringProperty branchProperty() {
-        return branch;
-    }
+    public String getDrink() { return drink.get(); }
+    public void setDrink(String d) { this.drink.set(d); }
+    public StringProperty drinkProperty() { return drink; }
 
-    public String getBranch() {
-        return branch.get();
-    }
+    public int getQuantity() { return quantity.get(); }
+    public void setQuantity(int q) { this.quantity.set(q); }
+    public IntegerProperty quantityProperty() { return quantity; }
 
-    public void setBranch(String branch) {
-        this.branch.set(branch);
-    }
-
-    public StringProperty drinkProperty() {
-        return drink;
-    }
-
-    public String getDrink() {
-        return drink.get();
-    }
-
-    public void setDrink(String drink) {
-        this.drink.set(drink);
-    }
-
-    public ObjectProperty<java.sql.Timestamp> dateProperty() {
-        return orderDate;
-    }
-
-    public IntegerProperty quantityProperty() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity.set(quantity);
-    }
-
-    public int getQuantity() {
-        return quantity.get();
-    }
-
-    public DoubleProperty amountProperty() {
-        return amount;
-    }
-
-    public void setAmount(double amount) {
-        this.amount.set(amount);
-    }
-
-    public double getAmount() {
-        return amount.get();
-    }
+    public double getAmount() { return amount.get(); }
+    public void setAmount(double a) { this.amount.set(a); }
+    public DoubleProperty amountProperty() { return amount; }
 }

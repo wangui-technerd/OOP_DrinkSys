@@ -17,4 +17,8 @@ public class Drink {
     public String getName() { return name; }
     public String getBrand() { return brand; }
     public double getPrice() { return price; }
+    @Override
+    public String toString() {
+        return name + " (" + brand + ")";
+    }
 }
