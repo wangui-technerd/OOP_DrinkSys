@@ -13,7 +13,7 @@ public class AdminDashController {
 
     @FXML
     private void handleViewCustomers() {
-        mainApp.showCustomerView();
+        mainApp.showViewCustomers();
     }
 
     @FXML

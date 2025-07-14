@@ -12,6 +12,8 @@
                 <TableColumn fx:id="idColumn" text="ID" prefWidth="50"/>
                 <TableColumn fx:id="nameColumn" text="Full Name" prefWidth="200"/>
                 <TableColumn fx:id="emailColumn" text="Email" prefWidth="200"/>
+                <TableColumn fx:id="contactColumn" text="Contact" prefWidth="150"/>
+
             </columns>
         </TableView>
         <Button text="Back to Admin Dashboard" onAction="#handleBackToAdmin"/>

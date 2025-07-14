@@ -10,13 +10,13 @@ public class BranchDashController {
 
     @FXML
     private void handleViewInventory() {
-        // TODO: Show inventory screen
+        mainApp.showInventoryView();
         System.out.println("Viewing inventory...");
     }
 
     @FXML
     private void handleBranchReport() {
-        // TODO: Show branch-specific report
+        mainApp.showBranchReportView();
         System.out.println("Showing branch report...");
     }
 

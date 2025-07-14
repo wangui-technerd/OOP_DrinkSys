@@ -1,28 +1,42 @@
 package com.drinks.demo.model;
 
 public class User {
+    private int userId;
     private String name;
     private String email;
     private String password;
     private String contact;
     private String role;
 
-    public User(String name,String contact, String email, String password, String role) {
+    public User() {}
+
+    public User(int userId,String name,String contact, String email, String password, String role) {
+        this.userId = userId;
         this.name = name;
         this.email = email;
         this.contact = contact;
         this.password = password;
         this.role = role;
     }
+     public User(String name, String contact, String email, String password, String role) {
+            this.name = name;
+            this.contact = contact;
+            this.email = email;
+            this.password = password;
+            this.role = role;
+        }
 
+    public int getUserId() { return userId; }
     public String getName() { return name; }
     public String getEmail() { return email; }
     public String getPassword() { return password; }
     public String getRole() { return role; }
     public String getContact(){return contact;}
 
+    public void setUserId(int userId) { this.userId = userId; }
+
     public void setName(String name) { this.name = name; }
-    public void setContact(String contact) { this.contact = contact; } // ✅ Add this
+    public void setContact(String contact) { this.contact = contact; } //
     public void setEmail(String email) { this.email = email; }
     public void setPassword(String password) { this.password = password; }
     public void setRole(String role) { this.role = role; }

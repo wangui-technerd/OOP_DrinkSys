@@ -5,8 +5,22 @@
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.drinks.demo.controller.viewBranchesController">
-    <VBox spacing="10" alignment="CENTER" AnchorPane.topAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
-        <Label text="All Branches" style="-fx-font-size: 18px;"/>
-        <TableView fx:id="branchesTable" prefHeight="300" prefWidth="500"/>
+
+    <VBox spacing="10" alignment="CENTER"
+          AnchorPane.topAnchor="20.0"
+          AnchorPane.leftAnchor="20.0"
+          AnchorPane.rightAnchor="20.0">
+
+        <Label text="All Branches" style="-fx-font-size: 18px;" />
+
+        <TableView fx:id="branchesTable" prefHeight="300" prefWidth="500">
+            <columns>
+                <TableColumn fx:id="idColumn" text="ID" />
+                <TableColumn fx:id="nameColumn" text="Name" />
+                <TableColumn fx:id="locationColumn" text="Location" />
+            </columns>
+        </TableView>
+
     </VBox>
+
 </AnchorPane>

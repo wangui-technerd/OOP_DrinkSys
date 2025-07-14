@@ -4,9 +4,8 @@ import com.drinks.demo.controller.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.Scene;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -21,11 +20,6 @@ public class Main extends Application {
         showWelcomeScreen();
     }
 
-    private Scene styledScene(AnchorPane view) {
-        Scene scene = new Scene(view);
-        scene.getStylesheets().add(getClass().getResource("/com/drinks/demo/css/style.css").toExternalForm());
-        return scene;
-    }
     private Scene styledScene(Parent view) {
         Scene scene = new Scene(view);
         scene.getStylesheets().add(getClass().getResource("/com/drinks/demo/css/style.css").toExternalForm());
@@ -38,7 +32,6 @@ public class Main extends Application {
             AnchorPane welcomeView = loader.load();
             WelcomeController controller = loader.getController();
             controller.setMainApp(this);
-
             primaryStage.setScene(styledScene(welcomeView));
             primaryStage.show();
         } catch (Exception e) {
@@ -52,7 +45,6 @@ public class Main extends Application {
             AnchorPane loginView = loader.load();
             LoginController controller = loader.getController();
             controller.setMainApp(this);
-
             primaryStage.setScene(styledScene(loginView));
         } catch (Exception e) {
             e.printStackTrace();
@@ -65,7 +57,6 @@ public class Main extends Application {
             AnchorPane registerView = loader.load();
             RegistrationController controller = loader.getController();
             controller.setMainApp(this);
-
             primaryStage.setScene(styledScene(registerView));
         } catch (Exception e) {
             e.printStackTrace();
@@ -83,7 +74,6 @@ public class Main extends Application {
             e.printStackTrace();
         }
     }
-
 
     public void showBranchView() {
         try {
@@ -103,12 +93,12 @@ public class Main extends Application {
             AnchorPane adminView = loader.load();
             AdminDashController controller = loader.getController();
             controller.setMainApp(this);
-
             primaryStage.setScene(styledScene(adminView));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
     public void showOrderView() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/drinks/demo/fxml/OrderForm.fxml"));
@@ -122,11 +112,56 @@ public class Main extends Application {
     }
 
     public void showAdminDash() {
-
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/drinks/demo/fxml/AdminDash.fxml"));
+            Parent dashboard = loader.load();
+            AdminDashController ctrl = loader.getController();
+            ctrl.setMainApp(this);
+            primaryStage.setScene(styledScene(dashboard));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
+    public void showInventoryView() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/drinks/demo/fxml/view_branches.fxml"));
+            Parent root = loader.load();
+            primaryStage.setScene(styledScene(root));
+            primaryStage.setTitle("Inventory View");
+            primaryStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void showViewCustomers() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/drinks/demo/fxml/view_customers.fxml"));
+            Parent view = loader.load();
+
+            viewCustomersController controller = loader.getController();
+            controller.setMainApp(this);
+
+            primaryStage.setScene(styledScene(view));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void showBranchReportView() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/drinks/demo/fxml/generate_reports.fxml"));
+            Parent root = loader.load();
+            ReportsController ctrl = loader.getController();
+            ctrl.setMainApp(this);
+            primaryStage.setScene(styledScene(root));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) {
         launch(args);
     }
-
-
 }

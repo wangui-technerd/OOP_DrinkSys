@@ -26,5 +26,19 @@
                 <TableColumn fx:id="contactColumn" text="Contact" prefWidth="300"/>
             </columns>
         </TableView>
+        <ComboBox fx:id="branchComboBox" layoutX="30" layoutY="220" prefWidth="200" />
+        <TableView fx:id="orderTable" layoutX="30" layoutY="260" prefWidth="400" prefHeight="200">
+            <columns>
+                <TableColumn fx:id="orderIdColumn" text="Order ID" />
+                <TableColumn fx:id="customerNameColumn" text="Customer" />
+                <TableColumn fx:id="productColumn" text="Product" />
+                <TableColumn fx:id="quantityColumn" text="Qty" />
+                <TableColumn fx:id="priceColumn" text="Price" />
+                <TableColumn fx:id="branchNameColumn" text="Branch " />
+
+
+            </columns>
+        </TableView>
+
     </VBox>
 </AnchorPane>

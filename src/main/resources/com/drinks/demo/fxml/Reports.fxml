@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.drinks.demo.controller.ReportsController" spacing="10" alignment="CENTER" style="-fx-padding: 20;">
+
+    <Label text="Generate Reports" style="-fx-font-size: 18;" />
+
+    <Button fx:id="reportButton" text="Generate Report" onAction="#generateReport" />
+
+    <Label fx:id="statusLabel" />
+
+</VBox>
