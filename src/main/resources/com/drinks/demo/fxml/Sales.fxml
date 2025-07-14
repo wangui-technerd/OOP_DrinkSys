@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.drinks.demo.controller.SalesController"
+      spacing="15"
+      alignment="TOP_CENTER">
+
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20" />
+    </padding>
+
+
+    <!-- Low Stock Alert -->
+    <Label fx:id="lowStockNotification"
+           text=""
+           style="-fx-text-fill: red; -fx-font-weight: bold; -fx-font-size: 14;" />
+
+    <!-- Filters -->
+    <HBox spacing="10" alignment="CENTER">
+        <ComboBox fx:id="branchFilter" promptText="Filter by Branch" />
+        <ComboBox fx:id="drinkTypeFilter" promptText="Filter by Drink Type" />
+        <Button text="Show All" onAction="#showAllSales" />
+    </HBox>
+
+    <!-- Sales Table -->
+    <TableView fx:id="salesTable" prefHeight="250">
+        <columns>
+            <TableColumn fx:id="dateCol" text="Date" />
+            <TableColumn fx:id="branchCol" text="Branch" />
+            <TableColumn fx:id="drinkCol" text="Drink" />
+            <TableColumn fx:id="qtyCol" text="Quantity" />
+            <TableColumn fx:id="amountCol" text="Amount" />
+        </columns>
+    </TableView>
+
+    <!-- Inventory Table -->
+    <Label text="Branch Inventory" style="-fx-font-size: 16px;" />
+    <TableView fx:id="inventoryTable" prefHeight="200">
+        <columns>
+            <TableColumn fx:id="invDrinkCol" text="Drink" />
+            <TableColumn fx:id="invQtyCol" text="Quantity" />
+        </columns>
+    </TableView>
+
+    <!-- Restock Controls -->
+    <HBox spacing="10" alignment="CENTER">
+        <ComboBox fx:id="restockBranch" promptText="Restock To (Except Nairobi)" />
+        <ComboBox fx:id="restockDrink" promptText="Select Drink" />
+        <TextField fx:id="restockAmount" promptText="Quantity" />
+        <Button text="Restock" onAction="#restockDrinkToBranch" />
+    </HBox>
+
+</VBox>

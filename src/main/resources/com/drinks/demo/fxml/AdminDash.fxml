@@ -14,6 +14,8 @@
         <Label text="Admin Dashboard" style="-fx-font-size: 22px; -fx-font-weight: bold;" />
 
         <Button text="View All Customers" onAction="#handleViewCustomers" prefWidth="200"/>
+        <Button text="View Sales" onAction="#handleViewSales" prefWidth="200"/>
+        <Button text="View Inventory" onAction="#handleViewInventory" prefWidth="200"/>
         <Button text="View All Branches" onAction="#handleViewBranches" prefWidth="200"/>
         <Button text="Generate Reports" onAction="#handleGenerateReports" prefWidth="200"/>
         <Button text="Logout" onAction="#handleLogout" prefWidth="200"/>

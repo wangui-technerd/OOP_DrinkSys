@@ -10,7 +10,7 @@ import java.util.List;
 
 public class OrderDao {
     public int addOrder(Order order) {
-        String sql = "INSERT INTO orders (customer_id, branch_id, order_date, total_amount) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO orders (user_id, branch_id, order_date, total_amount) VALUES (?, ?, ?, ?)";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setInt(1, order.getCustomerId());
@@ -28,7 +28,7 @@ public class OrderDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return -1; // Error
+        return -1;
     }
 
     public void addOrderDetail(OrderDetail detail) {
@@ -47,7 +47,7 @@ public class OrderDao {
 
     public List<Order> getOrdersByCustomer(int customerId) {
         List<Order> orders = new ArrayList<>();
-        String sql = "SELECT * FROM orders WHERE customer_id = ?";
+        String sql = "SELECT * FROM orders WHERE user_id = ?";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, customerId);
@@ -55,7 +55,7 @@ public class OrderDao {
                 while (rs.next()) {
                     Order order = new Order(
                             rs.getInt("order_id"),
-                            rs.getInt("customer_id"),
+                            rs.getInt("user_id"),
                             rs.getInt("branch_id"),
                             rs.getTimestamp("order_date"),
                             rs.getDouble("total_amount")
@@ -98,29 +98,64 @@ public class OrderDao {
         }
         return 0.0;
     }
+
     public Order getOrderById(int orderId) {
         String sql = "SELECT * FROM orders WHERE order_id = ?";
-
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
             pstmt.setInt(1, orderId);
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
-                    Order order = new Order();
-                    order.setOrderId(rs.getInt("order_id"));
-                    order.setCustomerId(rs.getInt("customer_id"));
-                    order.setBranchId(rs.getInt("branch_id"));
-                    order.setOrderDate(rs.getTimestamp("order_date"));
-                    order.setTotalAmount(rs.getDouble("total_amount"));     // ✅ works with double
+                    Order order = new Order(
+                            rs.getInt("order_id"),
+                            rs.getInt("user_id"),
+                            rs.getInt("branch_id"),
+                            rs.getTimestamp("order_date"),
+                            rs.getDouble("total_amount")
+                    );
                     return order;
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return null;
     }
 
+    public List<Order> getOrdersFiltered(String branch, String drinkType) {
+        List<Order> orders = new ArrayList<>();
+        String sql = """
+            SELECT DISTINCT o.*
+            FROM orders o
+            JOIN order_details od ON o.order_id = od.order_id
+            JOIN drinks d ON od.drink_id = d.drink_id
+            JOIN branches b ON o.branch_id = b.branch_id
+            WHERE (? IS NULL OR b.branch_name = ?)
+              AND (? IS NULL OR d.drink_name = ?)""";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, branch);
+            pstmt.setString(2, branch);
+            pstmt.setString(3, drinkType);
+            pstmt.setString(4, drinkType);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    Order order = new Order(
+                            rs.getInt("order_id"),
+                            rs.getInt("user_id"),
+                            rs.getInt("branch_id"),
+                            rs.getTimestamp("order_date"),
+                            rs.getDouble("total_amount")
+                    );
+                    orders.add(order);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return orders;
+    }
 }
