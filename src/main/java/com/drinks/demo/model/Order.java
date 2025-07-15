@@ -46,7 +46,13 @@ public class Order {
         setAmount(amount);
     }
 
-    public Order(int orderId, int userId, int branchId, Timestamp orderDate, double totalAmount) {
+    // ✅ Fixed constructor
+    public Order(int orderId, int customerId, int branchId, Timestamp orderDate, double totalAmount) {
+        setOrderId(orderId);
+        setCustomerId(customerId);
+        setBranchId(branchId);
+        setOrderDate(orderDate);
+        setTotalAmount(totalAmount);
     }
 
     // --- Getters and Setters ---
@@ -98,5 +104,4 @@ public class Order {
     public double getAmount() { return amount.get(); }
     public void setAmount(double a) { this.amount.set(a); }
     public DoubleProperty amountProperty() { return amount; }
-
 }

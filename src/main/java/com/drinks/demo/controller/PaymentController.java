@@ -19,7 +19,11 @@ public class PaymentController {
     private Order currentOrder;
 
     public void setOrderData(int orderIdFromPreviousPage) {
-        currentOrder = orderService.getOrderById(orderIdFromPreviousPage);
+        System.out.println("Received orderId: " + orderIdFromPreviousPage);
+        currentOrder = orderService.getOrderById(1);  // replace 5 with an actual ID in your DB
+        System.out.println("Fetched Order: " + currentOrder);
+
+
 
         if (currentOrder != null) {
             orderId.setText("ORD-" + currentOrder.getOrderId());
