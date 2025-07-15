@@ -6,7 +6,12 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class ReportServiceImpl implements ReportService {
-    private final OrderDao orderDAO = new OrderDao();
+    private final OrderDao orderDAO;
+
+    public ReportServiceImpl(OrderDao orderDAO) {
+        this.orderDAO = orderDAO;
+    }
+
 
     @Override
     public List<Order> getOrdersByCustomer(int customerId) {

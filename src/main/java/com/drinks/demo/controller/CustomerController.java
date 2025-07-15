@@ -1,11 +1,11 @@
 package com.drinks.demo.controller;
 
 import com.drinks.demo.database.BranchDao;
+import com.drinks.demo.database.CustomerDao;
 import com.drinks.demo.database.OrderDao;
 import com.drinks.demo.model.Branch;
 import com.drinks.demo.model.Customer;
 import com.drinks.demo.model.Order;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -32,13 +32,13 @@ public class CustomerController {
     @FXML private TableColumn<Order, Double> priceColumn;
     @FXML private TableColumn<Order, String> branchNameColumn;
 
-
     private final ObservableList<Branch> branches = FXCollections.observableArrayList();
     private final ObservableList<Order> orders = FXCollections.observableArrayList();
     private final ObservableList<Customer> customerData = FXCollections.observableArrayList();
 
-    private final OrderDao orderDao = new OrderDao(); // assumes constructor is parameterless
+    private final OrderDao orderDao = new OrderDao();
     private final BranchDao branchDao = new BranchDao();
+    private final CustomerDao customerDao = new CustomerDao();
 
     @FXML
     private void initialize() {
@@ -47,13 +47,12 @@ public class CustomerController {
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         contactColumn.setCellValueFactory(new PropertyValueFactory<>("contact"));
 
-
         customerTable.setItems(customerData);
-        loadSampleCustomers();
+        // You can optionally implement customerDao.getAllCustomers() here and load
 
         // Setup branch ComboBox
         branchComboBox.setItems(branches);
-        loadBranches(); // from database
+        loadBranches();
         branchComboBox.setOnAction(e -> loadOrdersForBranch(branchComboBox.getValue()));
 
         // Setup order table
@@ -69,9 +68,17 @@ public class CustomerController {
         addButton.setOnAction(event -> addCustomer());
     }
 
+    private void showAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
     private void loadBranches() {
         branches.clear();
-        branches.addAll(branchDao.getAllBranches()); // Fetch from DB
+        branches.addAll(branchDao.getAllBranches());
     }
 
     private void loadOrdersForBranch(Branch selectedBranch) {
@@ -83,26 +90,28 @@ public class CustomerController {
             }
             orders.addAll(loadedOrders);
             orderTable.refresh();
-            orderTable.getItems().clear();
-            orderTable.getItems().addAll(loadedOrders);
-
         }
     }
 
-    private void loadSampleCustomers() {
-        customerData.add(new Customer(1, "John Doe", "john@example.com"));
-        customerData.add(new Customer(2, "Jane Smith", "jane@example.com"));
-    }
-
     private void addCustomer() {
-        String name = customerNameField.getText();
-        String contact = contactField.getText();
+        String name = customerNameField.getText().trim();
+        String contact = contactField.getText().trim();
 
         if (!name.isEmpty() && !contact.isEmpty()) {
-            int newId = customerData.isEmpty() ? 1 : customerData.get(customerData.size() - 1).getCustomerId() + 1;
-            customerData.add(new Customer(newId, name, contact));
-            customerNameField.clear();
-            contactField.clear();
+            Customer newCustomer = new Customer(0, name, contact);
+
+            int generatedId = customerDao.addCustomer(newCustomer);
+            if (generatedId > 0) {
+                newCustomer.setCustomerId(generatedId);
+                customerData.add(newCustomer);
+                customerNameField.clear();
+                contactField.clear();
+                showAlert("Success", "Customer added successfully.");
+            } else {
+                showAlert("Database Error", "Failed to save customer.");
+            }
+        } else {
+            showAlert("Validation Error", "Name and Contact must not be empty.");
         }
     }
 }

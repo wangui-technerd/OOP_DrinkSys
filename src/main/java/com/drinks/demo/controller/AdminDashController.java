@@ -1,7 +1,15 @@
 package com.drinks.demo.controller;
 import com.drinks.demo.Main;
+import javafx.event.ActionEvent;
 import com.drinks.demo.database.OrderDao;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 import javafx.scene.control.Alert;
 
 public class AdminDashController {
@@ -41,6 +49,24 @@ public class AdminDashController {
     private void handleLogout() {
         mainApp.showAdminView();
     }
+
+    @FXML
+    private void handleViewSales(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/drinks/demo/fxml/Sales.fxml"));
+        Parent salesRoot = loader.load();
+
+        Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        stage.setScene(new Scene(salesRoot));
+    }
+
+    @FXML
+    private void handleViewInventory(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/drinks/demo/fxml/inventory.fxml"));
+        Parent inventoryRoot = loader.load();
+        Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        stage.setScene(new Scene(inventoryRoot));
+    }
+
 private void showAlert(Alert.AlertType type, String title, String message) {
     Alert alert = new Alert(type);
     alert.setTitle(title);

@@ -34,7 +34,7 @@ public class CustomerDashController {
 
     @FXML
     private void handleBackToAdmin() {
-        mainApp.showAdminView();
+        mainApp.showCustomerView();
     }
 
     @FXML

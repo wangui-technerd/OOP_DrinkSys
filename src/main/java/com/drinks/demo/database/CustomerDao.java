@@ -6,25 +6,32 @@ import com.drinks.demo.utilities.DBConnection;
 import java.sql.*;
 
 public class CustomerDao {
+
+    // Inserts a new customer into the DB and returns generated ID
     public int addCustomer(Customer customer) {
         String sql = "INSERT INTO customers (name, contact) VALUES (?, ?)";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
             pstmt.setString(1, customer.getName());
             pstmt.setString(2, customer.getContact());
+
             int affectedRows = pstmt.executeUpdate();
             if (affectedRows > 0) {
                 try (ResultSet rs = pstmt.getGeneratedKeys()) {
                     if (rs.next()) {
-                        return rs.getInt(1); // Return generated customer_id
+                        return rs.getInt(1); // return generated customer_id
                     }
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return -1; // Error
+
+        return -1; // failure
     }
+
+    // Retrieves a customer's name by their ID
     public String getCustomerNameById(int customerId) {
         String sql = "SELECT name FROM customers WHERE customer_id = ?";
 
@@ -44,5 +51,4 @@ public class CustomerDao {
 
         return null;
     }
-
 }

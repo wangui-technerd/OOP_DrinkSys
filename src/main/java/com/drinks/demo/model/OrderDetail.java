@@ -8,7 +8,6 @@ public class OrderDetail {
     private int quantity;
     private double price;
 
-
     private String drinkName;
 
     public OrderDetail() {}
@@ -73,4 +72,6 @@ public class OrderDetail {
     public void setBrand(String brand) {
         this.brand = brand;
     }
+
+    public double getTotalPrice() {return price * quantity;}
 }
