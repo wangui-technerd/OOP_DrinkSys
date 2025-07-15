@@ -10,9 +10,14 @@
             prefWidth="600" prefHeight="400">
 
     <VBox AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
-          AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0">
+          AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"
+          spacing="15">
 
-    <Label text="Payment Details" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+        <padding>
+            <Insets top="30" right="30" bottom="30" left="30"/>
+        </padding>
+
+        <Label text="Payment Details" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
 
         <HBox spacing="10">
             <Label text="Order ID:"/>
@@ -38,5 +43,6 @@
             <Button text="Submit Payment" onAction="#submitPayment" />
             <Button text="Back" onAction="#goBackToOrder" />
         </HBox>
+
     </VBox>
 </AnchorPane>
