@@ -160,6 +160,19 @@ public class Main extends Application {
             e.printStackTrace();
         }
     }
+    public void showOrderView(int customerId) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/drinks/demo/fxml/OrderForm.fxml"));
+            Parent orderView = loader.load();
+            OrderFormController controller = loader.getController();
+            controller.setMainApp(this);
+            controller.setCustomerId(customerId); // ✅ Set the logged-in user
+
+            primaryStage.setScene(styledScene(orderView));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static void main(String[] args) {
         launch(args);

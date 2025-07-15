@@ -10,7 +10,6 @@ import javafx.scene.Node;
 import javafx.event.ActionEvent;
 
 public class PaymentController {
-
     @FXML private Label customerName;
     @FXML private Label orderId;
     @FXML private Label totalAmount;
@@ -44,12 +43,15 @@ public class PaymentController {
             return;
         }
 
-        boolean saved = orderService.savePayment(currentOrder.getOrderId(), "Mpesa", "N/A");
+        String method = paymentMethod.getValue();
+        boolean saved = orderService.savePayment(currentOrder.getOrderId(), method, "N/A");
 
         if (saved) {
-            showAlert("Payment recorded successfully!");
+            showAlert("✅ Payment recorded successfully!");
+            System.out.println("✅ Payment saved for Order ID: " + currentOrder.getOrderId());
         } else {
-            showAlert("Failed to save payment.");
+            showAlert("❌ Failed to save payment.");
+            System.err.println("❌ Payment failed for Order ID: " + currentOrder.getOrderId());
         }
     }
 
@@ -74,4 +76,5 @@ public class PaymentController {
         alert.setContentText(msg);
         alert.showAndWait();
     }
+
 }

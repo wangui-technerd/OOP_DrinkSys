@@ -42,6 +42,12 @@ public class OrderFormController {
     private double total = 0;
     private Main mainApp;
 
+    // ✅ Added field to hold customer ID
+    private int customerId;
+
+
+
+
     @FXML
     public void initialize() {
         List<Branch> branches = orderService.getAllBranches();
@@ -144,7 +150,7 @@ public class OrderFormController {
         }
 
         Order order = new Order();
-        order.setCustomerId(1);
+        order.setCustomerId(customerId); // ✅ Use dynamic customer ID
         order.setBranchId(branchNameToId.get(selectedBranch));
         order.setTotalAmount(total);
 
@@ -192,6 +198,11 @@ public class OrderFormController {
 
     public void setMainApp(Main main) {
         this.mainApp = main;
+    }
+
+    // ✅ Add this setter so other controllers can pass the customer ID
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
     }
 
     @FXML

@@ -45,7 +45,9 @@ public class LoginController {
                 if (rs.next()) {
                     String role = rs.getString("role");
                     if ("customer".equalsIgnoreCase(role)) {
-                        mainApp.showCustomerView();
+                        int customerId = rs.getInt("user_id"); // ✅ get the logged-in user's ID
+                        mainApp.showOrderView(customerId);    // ✅ load the order screen for them
+
                         return;
                     } else if ("admin".equalsIgnoreCase(role)) {
                         mainApp.showAdminView();

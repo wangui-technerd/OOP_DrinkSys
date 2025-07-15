@@ -3,10 +3,12 @@ package com.drinks.demo.database;
 import com.drinks.demo.model.OrderDetail;
 import com.drinks.demo.utilities.DBConnection;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class OrderDetailDao {
-    public void addOrderDetaildrinks(OrderDetail orderDetail) {
+    public void addOrderDetail(OrderDetail orderDetail) {
         String sql = "INSERT INTO order_details (order_id, drink_id, quantity, price) VALUES (?, ?, ?, ?)";
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -18,8 +20,5 @@ public class OrderDetailDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    public void addOrderDetail(OrderDetail detail) {
     }
 }

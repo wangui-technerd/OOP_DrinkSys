@@ -1,4 +1,4 @@
-package com.drinks.demo.controller;
+ package com.drinks.demo.controller;
 import com.drinks.demo.utilities.DBHelper;
 import com.drinks.demo.model.Order;
 import javafx.fxml.FXML;
@@ -54,5 +54,4 @@ public class ReportsController {
     public void setMainApp(Main mainApp) {
         this.mainApp = mainApp;
     }
-        }
-
+}
