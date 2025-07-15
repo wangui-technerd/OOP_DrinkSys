@@ -5,6 +5,9 @@ import com.drinks.demo.service.OrderService;
 import com.drinks.demo.service.OrderServiceImpl;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
+import javafx.scene.Node;
+import javafx.event.ActionEvent;
 
 public class PaymentController {
 
@@ -12,49 +15,56 @@ public class PaymentController {
     @FXML private Label orderId;
     @FXML private Label totalAmount;
     @FXML private ComboBox<String> paymentMethod;
-    @FXML private TextField transactionCode;
 
     private final OrderService orderService = new OrderServiceImpl();
     private Order currentOrder;
-    private String branch;
 
     public void setOrderData(int orderIdFromPreviousPage) {
         currentOrder = orderService.getOrderById(orderIdFromPreviousPage);
 
         if (currentOrder != null) {
-            this.orderId.setText("ORD-" + currentOrder.getOrderId());
-            this.totalAmount.setText(String.format("%.2f", currentOrder.getTotalAmount()) + " KES");
+            orderId.setText("ORD-" + currentOrder.getOrderId());
+            totalAmount.setText(String.format("%.2f", currentOrder.getTotalAmount()) + " KES");
+            customerName.setText("Customer #" + currentOrder.getCustomerId());
         } else {
-            System.out.println("Order not found for ID: " + orderIdFromPreviousPage);
+            showAlert("Order not found for ID: " + orderIdFromPreviousPage);
         }
-    }
-
-    public void setBranch(String branch) {
-        this.branch = branch;
-        System.out.println("Received branch: " + branch);
     }
 
     @FXML
     public void initialize() {
-        paymentMethod.getItems().addAll("Mpesa", "Cash", "Card");
+        paymentMethod.getItems().add("Mpesa");
+        paymentMethod.setValue("Mpesa");
     }
 
     @FXML
     private void submitPayment() {
-        String method = paymentMethod.getValue();
-        String code = transactionCode.getText();
-
-        if (method == null || method.isEmpty()) {
-            showAlert("Please select a payment method.");
+        if (currentOrder == null) {
+            showAlert("Order data not loaded.");
             return;
         }
 
-        boolean saved = orderService.savePayment(currentOrder.getOrderId(), method, code);
+        boolean saved = orderService.savePayment(currentOrder.getOrderId(), "Mpesa", "N/A");
 
         if (saved) {
             showAlert("Payment recorded successfully!");
         } else {
             showAlert("Failed to save payment.");
+        }
+    }
+
+    @FXML
+    private void goBackToOrder(ActionEvent event) {
+        try {
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("/com/drinks/demo/fxml/order_form.fxml"));
+            javafx.scene.Parent root = loader.load();
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new javafx.scene.Scene(root));
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert("Error loading order form.");
         }
     }
 

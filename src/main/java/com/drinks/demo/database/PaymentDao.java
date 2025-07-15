@@ -16,14 +16,20 @@ public class PaymentDao {
 
             stmt.setInt(1, orderId);
             stmt.setString(2, method);
-            stmt.setString(3, transactionCode);
+
+            if (transactionCode == null || transactionCode.trim().isEmpty()) {
+                stmt.setNull(3, java.sql.Types.VARCHAR);
+            } else {
+                stmt.setString(3, transactionCode);
+            }
 
             int rowsInserted = stmt.executeUpdate();
             return rowsInserted > 0;
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Failed to save payment: " + e.getMessage());
             return false;
         }
     }
+
 }

@@ -1,54 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.layout.HBox?>
 
-<VBox xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.drinks.demo.controller.PaymentController"
-      spacing="20"
-      styleClass="root">
+<AnchorPane xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.drinks.demo.controller.PaymentController"
+            prefWidth="600" prefHeight="400">
 
-    <!-- Header -->
-    <Label text="Complete Payment"
-           styleClass="payment-header"
-           maxWidth="Infinity" alignment="CENTER"/>
+    <VBox AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
+          AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0">
 
-    <!-- Container -->
-    <VBox styleClass="payment-box">
+    <Label text="Payment Details" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
 
-        <Label text="Order Payment" styleClass="section-label"/>
+        <HBox spacing="10">
+            <Label text="Order ID:"/>
+            <Label fx:id="orderId"/>
+        </HBox>
 
-        <!-- Summary -->
-        <VBox>
-            <HBox styleClass="order-summary-row">
-                <Label text="Customer:"/>
-                <Label fx:id="customerName" text="Hafsa"/>
-            </HBox>
-            <HBox styleClass="order-summary-row">
-                <Label text="Order ID:"/>
-                <Label fx:id="orderId" text="ORD-00123"/>
-            </HBox>
-            <HBox styleClass="order-summary-row">
-                <Label text="Total:"/>
-                <Label fx:id="totalAmount" text="6,800"/>
-                <Label text="KES"/>
-            </HBox>
-        </VBox>
+        <HBox spacing="10">
+            <Label text="Customer:"/>
+            <Label fx:id="customerName"/>
+        </HBox>
 
-        <!-- Payment Method Section -->
-        <VBox spacing="12">
-            <Label text="Select Payment Method:"/>
-            <ComboBox fx:id="paymentMethod" promptText="Select a payment method"/>
+        <HBox spacing="10">
+            <Label text="Total Amount:"/>
+            <Label fx:id="totalAmount"/>
+        </HBox>
 
-            <Label text="Transaction Code (if paid):"/>
-            <TextField fx:id="transactionCode" promptText="e.g. MPESA123XYZ"/>
-        </VBox>
+        <HBox spacing="10">
+            <Label text="Payment Method:"/>
+            <ComboBox fx:id="paymentMethod" prefWidth="200"/>
+        </HBox>
 
-        <!-- Submit Button -->
-        <Button text="Confirm &amp; Submit"
-                styleClass="submit-button"
-                onAction="#submitPayment"/>
+        <HBox spacing="20">
+            <Button text="Submit Payment" onAction="#submitPayment" />
+            <Button text="Back" onAction="#goBackToOrder" />
+        </HBox>
     </VBox>
-</VBox>
+</AnchorPane>

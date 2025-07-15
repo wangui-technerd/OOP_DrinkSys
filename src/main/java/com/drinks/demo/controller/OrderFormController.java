@@ -18,6 +18,7 @@ import javafx.stage.Stage;
 import javafx.scene.Node;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.*;
 
 public class OrderFormController {
@@ -43,14 +44,12 @@ public class OrderFormController {
 
     @FXML
     public void initialize() {
-        // Load branches
         List<Branch> branches = orderService.getAllBranches();
         for (Branch b : branches) {
             branchSelector.getItems().add(b.getLocation());
             branchNameToId.put(b.getLocation(), b.getBranchId());
         }
 
-        // Load drink types and brands
         List<Drink> drinks = orderService.getAllDrinks();
         Set<String> types = new HashSet<>();
         for (Drink d : drinks) {
@@ -59,7 +58,6 @@ public class OrderFormController {
         }
         drinkTypeCombo.getItems().addAll(types);
 
-        // When type is selected, populate brands
         drinkTypeCombo.setOnAction(e -> {
             String selectedType = drinkTypeCombo.getValue();
             drinkBrandCombo.getItems().clear();
@@ -100,7 +98,6 @@ public class OrderFormController {
                 return;
             }
 
-            // Find the drink
             Drink selectedDrink = null;
             for (Drink d : typeToBrands.get(type)) {
                 if (d.getBrand().equals(brand)) {
@@ -147,7 +144,7 @@ public class OrderFormController {
         }
 
         Order order = new Order();
-        order.setCustomerId(1); // Static for demo
+        order.setCustomerId(1);
         order.setBranchId(branchNameToId.get(selectedBranch));
         order.setTotalAmount(total);
 
@@ -158,14 +155,14 @@ public class OrderFormController {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/drinks/demo/fxml/payment.fxml"));
                 Parent root = loader.load();
 
-                // Pass data to PaymentController
                 PaymentController paymentController = loader.getController();
-                paymentController.setBranch(selectedBranch);
                 paymentController.setOrderData(orderId);
 
-                // Create scene and apply CSS
                 Scene scene = new Scene(root);
-                scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
+                URL cssUrl = getClass().getResource("/com/drinks/demo/css/style.css");
+                if (cssUrl != null) {
+                    scene.getStylesheets().add(cssUrl.toExternalForm());
+                }
 
                 Stage stage = (Stage) branchSelector.getScene().getWindow();
                 stage.setScene(scene);
@@ -200,7 +197,7 @@ public class OrderFormController {
     @FXML
     private void goBack() {
         if (mainApp != null) {
-            mainApp.showCustomerView(); // Or showAdminView() depending on user type
+            mainApp.showCustomerView();
         }
     }
 }
