@@ -163,8 +163,12 @@ public class OrderFormController {
                 paymentController.setBranch(selectedBranch);
                 paymentController.setOrderData(orderId);
 
+                // Create scene and apply CSS
+                Scene scene = new Scene(root);
+                scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
+
                 Stage stage = (Stage) branchSelector.getScene().getWindow();
-                stage.setScene(new Scene(root));
+                stage.setScene(scene);
                 stage.show();
 
             } catch (IOException e) {

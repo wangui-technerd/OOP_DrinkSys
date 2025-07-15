@@ -103,3 +103,39 @@ AnchorPane {
 VBox {
     -fx-spacing: 10;
 }
+/* Payment Header */
+.payment-header {
+    -fx-background-color: #5e3a2e;
+    -fx-text-fill: white;
+    -fx-font-size: 24px;
+    -fx-padding: 10px;
+    -fx-alignment: center;
+}
+
+/* Payment Container */
+.payment-box {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 2);
+    -fx-padding: 20;
+    -fx-spacing: 16;
+}
+
+/* Section Label */
+.section-label {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
+/* Order Summary Rows */
+.order-summary-row {
+    -fx-spacing: 5;
+}
+
+/* Submit Button */
+.submit-button {
+    -fx-background-color: #5e3a2e;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-pref-width: Infinity;
+}

@@ -8,39 +8,31 @@
 <VBox xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.drinks.demo.controller.PaymentController"
       spacing="20"
-      style="-fx-background-color: #f9f5f2;"
-      padding="20.0">
+      styleClass="root">
 
     <!-- Header -->
     <Label text="Complete Payment"
-           style="-fx-background-color: #5e3a2e; -fx-text-fill: white; -fx-font-size: 24px; -fx-padding: 10px;"
+           styleClass="payment-header"
            maxWidth="Infinity" alignment="CENTER"/>
 
     <!-- Container -->
-    <VBox spacing="16"
-          style="-fx-background-color: white; -fx-background-radius: 12; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 2);"
-          maxWidth="600" alignment="TOP_LEFT">
+    <VBox styleClass="payment-box">
 
-        <padding>
-            <Insets top="20" right="20" bottom="20" left="20"/>
-        </padding>
-
-
-        <Label text="Order Payment" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+        <Label text="Order Payment" styleClass="section-label"/>
 
         <!-- Summary -->
-        <VBox spacing="10">
-            <HBox spacing="5">
+        <VBox>
+            <HBox styleClass="order-summary-row">
                 <Label text="Customer:"/>
-                <Label fx:id="customerName" text="Hafsa" />
+                <Label fx:id="customerName" text="Hafsa"/>
             </HBox>
-            <HBox spacing="5">
+            <HBox styleClass="order-summary-row">
                 <Label text="Order ID:"/>
                 <Label fx:id="orderId" text="ORD-00123"/>
             </HBox>
-            <HBox spacing="5">
+            <HBox styleClass="order-summary-row">
                 <Label text="Total:"/>
-                <Label fx:id="totalAmount" text="6,800" />
+                <Label fx:id="totalAmount" text="6,800"/>
                 <Label text="KES"/>
             </HBox>
         </VBox>
@@ -56,9 +48,7 @@
 
         <!-- Submit Button -->
         <Button text="Confirm &amp; Submit"
-                style="-fx-background-color: #5e3a2e; -fx-text-fill: white; -fx-font-size: 16px;"
-                maxWidth="10000"
+                styleClass="submit-button"
                 onAction="#submitPayment"/>
-
     </VBox>
 </VBox>
