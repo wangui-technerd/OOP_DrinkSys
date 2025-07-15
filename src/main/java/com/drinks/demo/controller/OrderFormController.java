@@ -9,9 +9,15 @@ import com.drinks.demo.service.OrderService;
 import com.drinks.demo.service.OrderServiceImpl;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import javafx.scene.Node;
 
+import java.io.IOException;
 import java.util.*;
 
 public class OrderFormController {
@@ -148,11 +154,29 @@ public class OrderFormController {
         int orderId = orderService.placeOrder(order, orderDetails);
 
         if (orderId > 0) {
-            showAlert("Order placed! Order ID: " + orderId);
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/drinks/demo/fxml/payment.fxml"));
+                Parent root = loader.load();
+
+                // Pass data to PaymentController
+                PaymentController paymentController = loader.getController();
+                paymentController.setBranch(selectedBranch);
+                paymentController.setOrderData(orderId);
+
+                Stage stage = (Stage) branchSelector.getScene().getWindow();
+                stage.setScene(new Scene(root));
+                stage.show();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                showAlert("Error loading payment page.");
+            }
+
             orderDetails.clear();
             orderList.getItems().clear();
             total = 0;
             totalCost.setText("0");
+
         } else {
             showAlert("Failed to place order.");
         }

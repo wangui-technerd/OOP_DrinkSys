@@ -1,10 +1,8 @@
 package com.drinks.demo.controller;
 
 import com.drinks.demo.model.Order;
-import com.drinks.demo.model.Customer; // assuming you have one
 import com.drinks.demo.service.OrderService;
 import com.drinks.demo.service.OrderServiceImpl;
-
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
@@ -18,23 +16,31 @@ public class PaymentController {
 
     private final OrderService orderService = new OrderServiceImpl();
     private Order currentOrder;
+    private String branch;
 
     public void setOrderData(int orderIdFromPreviousPage) {
-        // Fetch order from DB
         currentOrder = orderService.getOrderById(orderIdFromPreviousPage);
 
         if (currentOrder != null) {
             this.orderId.setText("ORD-" + currentOrder.getOrderId());
             this.totalAmount.setText(String.format("%.2f", currentOrder.getTotalAmount()) + " KES");
-
-            // fetch customer name from DB
-            String name = orderService.getCustomerNameById(currentOrder.getCustomerId());
-            this.customerName.setText(name);
+        } else {
+            System.out.println("Order not found for ID: " + orderIdFromPreviousPage);
         }
     }
 
+    public void setBranch(String branch) {
+        this.branch = branch;
+        System.out.println("Received branch: " + branch);
+    }
+
     @FXML
-    public void submitPayment() {
+    public void initialize() {
+        paymentMethod.getItems().addAll("Mpesa", "Cash", "Card");
+    }
+
+    @FXML
+    private void submitPayment() {
         String method = paymentMethod.getValue();
         String code = transactionCode.getText();
 
@@ -43,18 +49,18 @@ public class PaymentController {
             return;
         }
 
-        // Save payment to DB (example placeholder)
-        boolean success = orderService.savePayment(currentOrder.getOrderId(), method, code);
+        boolean saved = orderService.savePayment(currentOrder.getOrderId(), method, code);
 
-        if (success) {
-            showAlert("Payment successful for " + currentOrder.getOrderId());
+        if (saved) {
+            showAlert("Payment recorded successfully!");
         } else {
-            showAlert("Payment failed.");
+            showAlert("Failed to save payment.");
         }
     }
 
     private void showAlert(String msg) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Info");
         alert.setContentText(msg);
         alert.showAndWait();
     }

@@ -1,4 +1,5 @@
 package com.drinks.demo.service;
+import com.drinks.demo.model.Payment;
 
 import com.drinks.demo.model.Order;
 import com.drinks.demo.model.OrderDetail;
@@ -18,4 +19,5 @@ public interface OrderService {
     Order getOrderById(int orderId);
     String getCustomerNameById(int customerId);
     boolean savePayment(int orderId, String method, String code);
+
 }

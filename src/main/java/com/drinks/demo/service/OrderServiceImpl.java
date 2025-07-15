@@ -1,5 +1,11 @@
 package com.drinks.demo.service;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 import com.drinks.demo.database.PaymentDao;
 import com.drinks.demo.database.OrderDao;
 import com.drinks.demo.database.OrderDetailDao;
@@ -11,6 +17,7 @@ import com.drinks.demo.model.Order;
 import com.drinks.demo.model.OrderDetail;
 import com.drinks.demo.model.Drink;
 import com.drinks.demo.model.Branch;
+import com.drinks.demo.model.Payment; // ✅ Add this
 
 import java.util.List;
 
@@ -23,18 +30,15 @@ public class OrderServiceImpl implements OrderService {
     private final PaymentDao paymentDAO = new PaymentDao();
     private final CustomerDao customerDAO = new CustomerDao();
 
-
     @Override
     public int placeOrder(Order order, List<OrderDetail> orderDetails) {
         int orderId = orderDAO.addOrder(order);
-
         if (orderId > 0) {
             for (OrderDetail detail : orderDetails) {
                 detail.setOrderId(orderId);
                 orderDetailDAO.addOrderDetail(detail);
             }
         }
-
         return orderId;
     }
 
@@ -72,4 +76,8 @@ public class OrderServiceImpl implements OrderService {
     public boolean savePayment(int orderId, String method, String code) {
         return paymentDAO.save(orderId, method, code);
     }
-}
+
+
+        }
+
+

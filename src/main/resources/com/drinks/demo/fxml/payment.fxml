@@ -3,12 +3,13 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.HBox?>
 
 <VBox xmlns:fx="http://javafx.com/fxml"
-      fx:controller="controller.PaymentController"
+      fx:controller="com.drinks.demo.controller.PaymentController"
       spacing="20"
       style="-fx-background-color: #f9f5f2;"
-      padding="20">
+      padding="20.0">
 
     <!-- Header -->
     <Label text="Complete Payment"
@@ -16,8 +17,14 @@
            maxWidth="Infinity" alignment="CENTER"/>
 
     <!-- Container -->
-    <VBox spacing="16" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 12; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 2);"
+    <VBox spacing="16"
+          style="-fx-background-color: white; -fx-background-radius: 12; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 2);"
           maxWidth="600" alignment="TOP_LEFT">
+
+        <padding>
+            <Insets top="20" right="20" bottom="20" left="20"/>
+        </padding>
+
 
         <Label text="Order Payment" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
 
@@ -41,24 +48,17 @@
         <!-- Payment Method Section -->
         <VBox spacing="12">
             <Label text="Select Payment Method:"/>
-            <ComboBox fx:id="paymentMethod">
-                <items>
-                    <FXCollections fx:factory="observableArrayList">
-                        <String fx:value="M-Pesa"/>
-                        <String fx:value="Debit/Credit Card"/>
-                        <String fx:value="Pay on Delivery"/>
-                    </FXCollections>
-                </items>
-            </ComboBox>
+            <ComboBox fx:id="paymentMethod" promptText="Select a payment method"/>
 
             <Label text="Transaction Code (if paid):"/>
             <TextField fx:id="transactionCode" promptText="e.g. MPESA123XYZ"/>
         </VBox>
 
         <!-- Submit Button -->
-        <Button text="Confirm & Submit"
+        <Button text="Confirm &amp; Submit"
                 style="-fx-background-color: #5e3a2e; -fx-text-fill: white; -fx-font-size: 16px;"
-                maxWidth="Infinity"
+                maxWidth="10000"
                 onAction="#submitPayment"/>
+
     </VBox>
 </VBox>
