@@ -1,5 +1,5 @@
 package com.drinks.demo.controller;
-
+import java.io.IOException;
 import com.drinks.demo.model.Admin;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -45,7 +45,7 @@ public class AdminController {
 
         if (authenticateAdmin(admin)) {
             statusLabel.setText("Login successful!");
-            // TODO: Load admin dashboard
+            mainApp.showAdminDash();
         } else {
             statusLabel.setText("Invalid credentials!");
         }

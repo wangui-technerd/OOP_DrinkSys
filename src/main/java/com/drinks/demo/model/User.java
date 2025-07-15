@@ -17,7 +17,6 @@ public class User {
         this.role = role;
     }
 
-    public void setUserId(int userId){this.userId=userId;}
     public int getUserId(){return userId;}
     public String getName() { return name; }
     public String getEmail() { return email; }
@@ -25,6 +24,7 @@ public class User {
     public String getRole() { return role; }
     public String getContact(){return contact;}
 
+    public void setUserId(int userId){this.userId=userId;}
     public void setName(String name) { this.name = name; }
     public void setContact(String contact) { this.contact = contact; } // ✅ Add this
     public void setEmail(String email) { this.email = email; }
@@ -43,5 +43,4 @@ public class User {
         }
         return null;
     }
-
 }

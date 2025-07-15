@@ -1,5 +1,6 @@
 package com.drinks.demo.controller;
 
+import com.drinks.demo.Main;
 import com.drinks.demo.model.Customer;
 import com.drinks.demo.service.CustomerService;
 import com.drinks.demo.service.CustomerServiceImpl;
@@ -23,6 +24,8 @@ public class viewCustomersController {
 
     private final CustomerService customerService = new CustomerServiceImpl();
 
+    private Main mainApp;
+
     @FXML
     public void initialize() {
         idColumn.setCellValueFactory(new PropertyValueFactory<>("customerId"));
@@ -31,5 +34,17 @@ public class viewCustomersController {
 
         ObservableList<Customer> customerData = FXCollections.observableArrayList(customerService.getAllCustomers());
         customersTable.setItems(customerData);
+    }
+    @FXML
+    private void handleBackToAdmin() {
+        // Navigate back to the Admin Dashboard
+        if (mainApp != null) {
+            mainApp.showAdminView();
+        }
+    }
+
+
+    public void setMainApp(Main main) {
+        this.mainApp = main;
     }
 }
