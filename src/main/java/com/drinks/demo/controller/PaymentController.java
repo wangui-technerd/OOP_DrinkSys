@@ -20,7 +20,7 @@ public class PaymentController {
 
     public void setOrderData(int orderIdFromPreviousPage) {
         System.out.println("Received orderId: " + orderIdFromPreviousPage);
-        currentOrder = orderService.getOrderById(1);  // replace 5 with an actual ID in your DB
+        currentOrder = orderService.getOrderById(orderIdFromPreviousPage);  // replace 5 with an actual ID in your DB
         System.out.println("Fetched Order: " + currentOrder);
 
 
