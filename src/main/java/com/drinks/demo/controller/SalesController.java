@@ -4,6 +4,7 @@ import com.drinks.demo.database.InventoryDAO;
 import com.drinks.demo.database.OrderDao;
 import com.drinks.demo.model.Inventory;
 import com.drinks.demo.model.Order;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -56,7 +57,8 @@ public class SalesController {
     }
 
     private void setupSalesTable() {
-        dateCol.setCellValueFactory(data -> data.getValue().dateProperty().asString());
+        dateCol.setCellValueFactory(data ->
+                new SimpleStringProperty(data.getValue().getOrderDate().toLocalDateTime().toLocalDate().toString()));
         branchCol.setCellValueFactory(data -> data.getValue().branchProperty());
         drinkCol.setCellValueFactory(data -> data.getValue().drinkProperty());
         qtyCol.setCellValueFactory(data -> data.getValue().quantityProperty().asObject());

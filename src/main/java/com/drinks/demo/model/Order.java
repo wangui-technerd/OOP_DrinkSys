@@ -46,6 +46,9 @@ public class Order {
         setAmount(amount);
     }
 
+    public Order(int orderId, int userId, int branchId, Timestamp orderDate, double totalAmount) {
+    }
+
     // --- Getters and Setters ---
     public int getOrderId() { return orderId.get(); }
     public void setOrderId(int id) { this.orderId.set(id); }
@@ -95,4 +98,5 @@ public class Order {
     public double getAmount() { return amount.get(); }
     public void setAmount(double a) { this.amount.set(a); }
     public DoubleProperty amountProperty() { return amount; }
+
 }

@@ -1,6 +1,7 @@
 package com.drinks.demo.model;
 
 public class User {
+    private int userId;
     private String name;
     private String email;
     private String password;
@@ -8,6 +9,7 @@ public class User {
     private String role;
 
     public User(String name,String contact, String email, String password, String role) {
+        this.userId = userId;
         this.name = name;
         this.email = email;
         this.contact = contact;
@@ -15,6 +17,8 @@ public class User {
         this.role = role;
     }
 
+    public void setUserId(int userId){this.userId=userId;}
+    public int getUserId(){return userId;}
     public String getName() { return name; }
     public String getEmail() { return email; }
     public String getPassword() { return password; }
@@ -39,4 +43,5 @@ public class User {
         }
         return null;
     }
+
 }

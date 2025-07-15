@@ -14,6 +14,37 @@ import java.util.*;
 public class OrderDao {
     private static final String REPORT_DIR = "reports/";
 
+    public List<Order> getOrdersByCustomer(int customerId) {
+        List<Order> orders = new ArrayList<>();
+        String sql = """
+        SELECT o.order_id, o.user_id, o.branch_id, o.order_date, o.total_amount
+        FROM orders o
+        WHERE o.user_id = ?
+        ORDER BY o.order_date DESC
+    """;
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, customerId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    orders.add(new Order(
+                            rs.getInt("order_id"),
+                            rs.getInt("user_id"),
+                            rs.getInt("branch_id"),
+                            rs.getTimestamp("order_date"),
+                            rs.getDouble("total_amount")
+                    ));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return orders;
+    }
+
     public static class BranchSales {
         public final String branchName;
         public final double totalSales;
@@ -140,6 +171,60 @@ public class OrderDao {
         return recentOrders;
     }
 
+    public List<Order> getOrdersByBranchId(int branchId) {
+        List<Order> orders = new ArrayList<>();
+        String sql = """
+        SELECT o.order_id, o.user_id, o.branch_id, o.order_date, o.total_amount,
+               u.name AS customer_name, b.name AS branch_name
+        FROM orders o
+        JOIN users u ON o.user_id = u.user_id
+        JOIN branches b ON o.branch_id = b.branch_id
+        WHERE o.branch_id = ?
+        ORDER BY o.order_date DESC
+    """;
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, branchId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    Order order = new Order(
+                            rs.getInt("order_id"),
+                            rs.getInt("user_id"),
+                            rs.getInt("branch_id"),
+                            rs.getTimestamp("order_date"),
+                            rs.getDouble("total_amount")
+                    );
+                    order.setCustomerName(rs.getString("customer_name"));
+                    order.setBranchName(rs.getString("branch_name"));
+                    orders.add(order);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return orders;
+    }
+
+    public double getBranchSales(int branchId) {
+        String sql = "SELECT SUM(total_amount) AS branch_sales FROM orders WHERE branch_id = ?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, branchId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getDouble("branch_sales");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0.0;
+    }
+
+
     public int addOrder(Order order) {
         String sql = "INSERT INTO orders (user_id, branch_id, order_date, total_amount) VALUES (?, ?, ?, ?)";
         try (Connection conn = DBConnection.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -184,4 +269,59 @@ public class OrderDao {
         }
         return null;
     }
+    public List<Order> getOrdersFiltered(String branch, String drinkType) {
+        List<Order> orders = new ArrayList<>();
+
+        StringBuilder sql = new StringBuilder("""
+        SELECT o.order_id, o.order_date, b.name AS branch_name,
+               d.name AS drink_name, od.quantity, (od.price * od.quantity) AS amount
+        FROM orders o
+        JOIN order_details od ON o.order_id = od.order_id
+        JOIN drinks d ON od.drink_id = d.drink_id
+        JOIN branches b ON o.branch_id = b.branch_id
+        WHERE 1 = 1
+    """);
+
+        // Parameters list for filtering
+        List<Object> params = new ArrayList<>();
+
+        if (branch != null && !branch.isBlank()) {
+            sql.append(" AND b.name = ?");
+            params.add(branch);
+        }
+
+        if (drinkType != null && !drinkType.isBlank()) {
+            sql.append(" AND d.name = ?");
+            params.add(drinkType);
+        }
+
+        sql.append(" ORDER BY o.order_date DESC");
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
+
+            // Bind parameters
+            for (int i = 0; i < params.size(); i++) {
+                stmt.setObject(i + 1, params.get(i));
+            }
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Order order = new Order(
+                            rs.getString("branch_name"),
+                            rs.getString("drink_name"),
+                            rs.getTimestamp("order_date"),
+                            rs.getInt("quantity"),
+                            rs.getDouble("amount")
+                    );
+                    orders.add(order);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return orders;
+    }
+
 }
